@@ -11,23 +11,23 @@ x <- rnorm(100,10,2)
 summary(x)
 hist(x)
 
-# hypothesis test mu \neq 10
+# hypothesis test mu \neq 10 (\neq is LaTeX for "not equal to")
 ## calculate t-stat:
 n <- length(x)
-H0 <- 9
+H0 <- 10
 t <- (mean(x) - H0) / (sd(x) / sqrt(n))
 print(t)
 ## calculate two-tailed p-value
 p_value <- 2*pt(-abs(t), df=n-1) # all t-distributions are defined by degrees of freedom (df)
 print(p_value)
 ## can also integrate the t-distribution:
-curve(dt(x,n-1), from = -5, to = 5)
-abline(v=t, col="blue")
-abline(v=-t, col="blue")
+curve(dt(x,n-1), from = -5, to = 5) ## visualize the t-distribution for our degrees of freedom
+abline(v=t, col="blue") # t-stat (positive)
+abline(v=-t, col="blue") # t-stat (negative)
 2*integrate(function(x) dt(x,n-1),lower = t, upper = Inf)$value # integrate from t-stat to infinity (then times 2 since distribution is symmetric)
 integrate(function(x) dt(x,n-1),lower = -Inf, upper = Inf)$value # sanity check: total area = 1
 ## replicate using the canned t-test
-t.test(x, mu=9)
+t.test(x, mu=10)
 
 # CLT ---------------------------------------------------------------------
 
