@@ -13,10 +13,8 @@ df <- mpg
 # basic commands to plot data (qplot stands for "quick plot")
 qplot(cty, data = df) # histogram
 qplot(cty, hwy, data = df) # scatter plot
-qplot(cty, hwy, data = df) # scatter plot
 qplot(cty, hwy, data = df, facets = ~year) # scatter plot with one-way faceting
 qplot(cty, hwy, data = df, facets = year~class) # scatter plot with two-way faceting
-
 
 # simulate data -----------------------------------------------------------
 treatment <- rep(0:1, each=100)
