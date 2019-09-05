@@ -24,7 +24,7 @@ print(p_value)
 curve(dt(x,n-1), from = -5, to = 5) ## visualize the t-distribution for our degrees of freedom
 abline(v=t, col="blue") # t-stat (positive)
 abline(v=-t, col="blue") # t-stat (negative)
-2*integrate(function(x) dt(x,n-1),lower = t, upper = Inf)$value # integrate from t-stat to infinity (then times 2 since distribution is symmetric)
+2*integrate(function(x) dt(x,n-1),lower = abs(t), upper = Inf)$value # integrate from t-stat to infinity (then times 2 since distribution is symmetric)
 integrate(function(x) dt(x,n-1),lower = -Inf, upper = Inf)$value # sanity check: total area = 1
 ## replicate using the canned t-test
 t.test(x, mu=10)
@@ -79,7 +79,7 @@ df <- read.csv("auto.csv")
 # hypothesis test: weight has an effect on price
 # H0: beta = 0
 # HA: beta \neq 0
-m1 <- lm(price~weight, data=df)
+m1 <- lm(price ~ weight, data=df)
 summary(m1)
 
 # recreate the hypothesis test by hand 
@@ -107,5 +107,5 @@ df <- df %>%
 # 2. create a variable that subtracts `weight`` from `weight_by_origin`
 df$weight_no_origin <- df$weight - df$weight_by_origin
 # 3. Now run a regression on price and our new variable:
-lm(price~weight_no_origin, data=df)
+summary(lm(price~weight_no_origin, data=df))
 # coefficient on weight_no_origin is same as coefficient on weight in model m2
