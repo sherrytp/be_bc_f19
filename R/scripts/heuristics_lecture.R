@@ -46,6 +46,18 @@ utility <- function(x,p,tq,hq) {
 curve(inverse_utility(x), from =0, to = 100)
 optim(1, inverse_utility, lower=0, upper=100, method = "Brent")
 
+
+# Gabaix et al (2006): Comparing algorithms -------------------------------
+
+GW <- function(p,V,c=1) {
+  return((p*V - c)/p)
+}
+
+DC <- function(p,V,S,c=1) {
+  return(p*(V-S) - c)
+}
+
+
 # Apicella et al. (2014) --------------------------------------------------
 
 # load data (assumes you are in the class directory)
