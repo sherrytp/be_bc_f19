@@ -93,9 +93,8 @@ binom.test(d, n = sum(d), p = 1/2, alternative = "greater")
 # Table 1: linear regression
 m1 <- lm(trade~magnola_region + distance_to_mangola + lighter + lighter*distance_to_mangola, data=df)
 summary(m1) # are these the correct standard errors?
-plot(df$distance_to_mangola,predict(m2,type="response"), type = "l")
 
-# cluster robust standard errors
+# cluster robust standard errors: adjust for correlated errors *within* camps (still assumes independence *between* camps)
 vcov_campname <- sandwich::vcovCL(m2,cluster = df$campname)
 lmtest::coeftest(m2, vcov_campname)
 
