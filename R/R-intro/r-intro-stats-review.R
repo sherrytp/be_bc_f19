@@ -6,7 +6,7 @@ library(latex2exp) # install.packages("latex2exp") to put math symbols in plot t
 
 # hypothesis testing ------------------------------------------------------
 
-# draw 100 observations from a normal dist with mean=10 and sd=2
+# draw 100 observations from a normal dist with mean=10 and sd=2 - DRAW Random Variables 
 x <- rnorm(100,10,2)
 summary(x)
 hist(x)
@@ -21,11 +21,12 @@ print(t)
 p_value <- 2*pt(-abs(t), df=n-1) # all t-distributions are defined by degrees of freedom (df)
 print(p_value)
 ## can also integrate the t-distribution:
-curve(dt(x,n-1), from = -5, to = 5) ## visualize the t-distribution for our degrees of freedom
+curve(dt(x,n-1), from = -5, to = 5) ## visualize the t-distribution for our degrees of freedom; dt means density of observation 
 abline(v=t, col="blue") # t-stat (positive)
 abline(v=-t, col="blue") # t-stat (negative)
-2*integrate(function(x) dt(x,n-1),lower = abs(t), upper = Inf)$value # integrate from t-stat to infinity (then times 2 since distribution is symmetric)
+2*integrate(function(x) dt(x,n-1),lower = t, upper = Inf)$value # integrate from t-stat to infinity (then times 2 since distribution is symmetric)
 integrate(function(x) dt(x,n-1),lower = -Inf, upper = Inf)$value # sanity check: total area = 1
+integrate(function(x) dt(x, n-1), lower = -t, upper = t)$value
 ## replicate using the canned t-test
 t.test(x, mu=10)
 
@@ -73,19 +74,21 @@ cowplot::plot_grid(p1,p2,ncol = 2, labels = "AUTO") # notice the package "cowplo
 # regression --------------------------------------------------------------
 
 # read auto data (note: this comes from Stata)
+setwd("/Users/apple/Desktop/be_bc_f19/R/R-intro")
 df <- read.csv("auto.csv")
 
 # single regression: Price(weight)
 # hypothesis test: weight has an effect on price
 # H0: beta = 0
 # HA: beta \neq 0
-m1 <- lm(price ~ weight, data=df)
+m1 <- lm(price ~ weight, data = df)
+# Linear Model(y ~ x, data = df)
 summary(m1)
 
 # recreate the hypothesis test by hand 
 # t-stat is just beta/standard error of beta:
 t <- 2.0441 / 0.3768
-p <- 2*pt(-abs(t), df=nrow(df) - 2) # df: N - number of covariates in regression (including constant)
+p <- 2*pt(-abs(t), df=nrow(df) - 2) # df: N - number of covariates in regression (including constant); pt: probability of t-stats 
 print(paste0("t-value: ", t))
 print(paste0("p-value: ", p))
 
@@ -104,8 +107,31 @@ summary(m2)
 df <- df %>% 
   group_by(foreign) %>% 
   mutate(weight_by_origin = mean(weight))
-# 2. create a variable that subtracts `weight`` from `weight_by_origin`
+# 2. create a variable that subtracts `weight`` from `weight_by_origin`; `weight_by_origin` eliminates the effect of origin from weight on price 
 df$weight_no_origin <- df$weight - df$weight_by_origin
 # 3. Now run a regression on price and our new variable:
-summary(lm(price~weight_no_origin, data=df))
+lm(price~weight_no_origin, data=df)
 # coefficient on weight_no_origin is same as coefficient on weight in model m2
+
+
+# CLASS NOTE -------------------------- 
+# Expected Value: 
+# The population parameters are "never" reservable and called /mu. But sample is observable, so that is why the statistics can be used to evaluate the data. 
+# E() gives an unbiased estimator of the mean of the population. 
+# Population of variance: sigma^2;
+# we cannot observe parameters but we can observe the statistics. ###!!!! 
+
+# Ansinton property - law of large numbers 
+# Hypothesis Testing: 
+# Null Hypo = mu equals to 0 
+# Alter Hypo = mu is not equal to 0 
+# t-stats and probablity; t-stats defines the t-distribution w degree of freedom, less df, more right skewed 
+# significance: if the null hypotheis, what's the prob that there is an extreme value that I observe 
+# significance check: if p < alpha where alpha is the threshold set by the user, larger p, easier to reject 
+# p-value + significance checking done by convention - certain rule of thumbs 
+# CLT: 
+# The t-test is valid for normaally distributed variables 
+# transformation you can always assume for normality but SAMPLING DISTRIBUTION of any sample of population works!!! 
+# Poisson process: a stochastic process, a high frequency and large size of number 
+
+# CLT - never seizes to amuse by infinite number of data 

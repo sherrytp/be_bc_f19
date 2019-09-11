@@ -8,36 +8,48 @@
 ### advice: first work through 1 and 2, then come back for 3
 
 # 1. Objects --------------------------------------------------------------
+# Data type of a computer; 
 # objects are nouns
 number <- 1 # vector with one number observation
-letter <- "a" # vector with one string observation
-# objects are mutable
+class(number)
+letter <- "a" # vector with one string observation; character 
+class(letter) 
+# objects are mutable - you can change it but character doesn't change 
 number <- number + 1
 letter <- "b"
 
 # most common objects that we will use are vectors, matrices and dataframes
-x <- c(1,2,3) # vector with three numeric observations
+x <- c(1,2,3) # vector with three numeric observations 
 y <- c("a", "b", "c") # vector with three string observations
-df <- data.frame(x,y) # dataframe: an object containing many vectors with some added perks
+df <- data.frame(x,y) # !!!dataframe: an object containing many vectors with some added perks 
 matrix(nrow=2,ncol=2) # empty 2x2 matrix
 matrix(0,nrow=2,ncol=2) # matrix of zeros
 matrix(runif(10), 2,2) # matrix of random uniform numbers between [0,1]
 diag(2) # 2x2 identity matrix
 
 # 2. Functions ------------------------------------------------------------
-# functions are verbs that manipulate objects
+# functions are verbs that manipulate objects; act on the nouns 
 # like in math, a function is machine that takes an argument(s) and returns something
 
-# sample data
+# sample data; c() as a way to appendex
 x <- c(1,2,3,4,5)
 
 # mean() takes a vector as an argument and returns the mean of that vector
 mean(x)
 
+
+# Alternatively, to create a function evaluating a mean 
+MyMean <- function(x){
+  y <- sum(x)/length(x)
+  return(y)
+  # but things returned are only stayed for this cell - compile it 
+  # Everything defined within a function is local but cannot globally recalled 
+}
+
 # you can write your own functions
 # example: write a function "JointSum(x,y)" that takes two any two numbers "x" and "y" and returns the square of their product divided by their sum
 JointSum <- function(x,y){
-  # code here
+  (x*y)^2/sum(x+y)
 }
 # test it: JointSum(2,3) should return 7.2
 
@@ -65,7 +77,7 @@ head(df)
 head(df,5)
 tail(df,15)
 View(df)
-dim(df)
+dim(df)   # Dimension of dataframe, = df.shape()
 nrow(df)
 names(df)
 
@@ -87,13 +99,19 @@ table(df$year, df$class) # contingency table
 # you can slice data frames by index: df[row, column]
 df[1,] # first row
 df[,1] # first column
+df[1, 1:4]   # first row and first 4 columns 
 df[2,3] # 2nd row, 3rd column
+df[ , ] # returns everything 
+
 # or by name: (this only applies to columns)
 df['model']
 # you can save slices to new dataframes ('subsetting')
-df2 <- df[1:20,] # save the first ten rows. same as head(df,10)
+df2 <- df[1:20,] # save the first ten rows. same as head(df,10); all columns and first 20 rows 
 # or with the subset function, which is more flexible
-df3 <- subset(df, model == 'a4')
+df3 <- subset(df, model == 'a4')  # take argument as a dataset and then parsing 
+df3 <- subset(df, model == 'a4', year == 1999 & hwy == 29)
+# y = 2 creates a new variable and assign a value to it 
+# y == 2 creates a logic function comparison; and output can only be TRUE and FALSE 
 
 #3. iteration -----------------------------------------------------
 # iteration means looping

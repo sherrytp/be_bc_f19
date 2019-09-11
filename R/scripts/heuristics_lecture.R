@@ -36,7 +36,7 @@ utility <- function(x,p,tq,hq) {
   u <- 20*sqrt(x-p) + 2*tq + hq
   return(u)
 }
-curve(utility(x,tq=0,hq=0), from =0, to = 1000)
+curve(utility(x,tq=0,hq=0, p = 0), from =0, to = 1000)
 utility(94,3,3)
 
 utility <- function(x,p,tq,hq) {
@@ -57,7 +57,11 @@ DC <- function(p,V,S,c=1) {
   return(p*(V-S) - c)
 }
 
+GW(p = 0.09, 21)
+GW(p = 0.76, 10)
 
+DC(p = 0.09, 21, 1)
+DC(p = 0.76, 10, 1)
 # Apicella et al. (2014) --------------------------------------------------
 
 # load data (assumes you are in the class directory)

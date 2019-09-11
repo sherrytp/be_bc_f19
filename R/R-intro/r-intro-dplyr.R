@@ -7,11 +7,11 @@ library(tidyverse)
 # manipulation with dplyr --------------------------------------------------
 # dplyr is a jewel in the R data science crown
 # it is bundled with the tidyverse
-# it takes the idea that objects are nouns and functions are verbs very seriously
+# it takes the idea that objects are nouns and functions are verbs extremely seriously
 # the main purpose of dplyr is to make the manipulation of data frames highly literate
 # code is written in a way that resembles a written sentence, in which words are chained 
-#  together to create ideas
-# in dply, functions are chained together to create summaries of dataframes
+# together to create ideas
+# in dplyr, functions are chained together to create summaries of dataframes
 
 # load data
 data("mpg")
@@ -23,7 +23,20 @@ df <- mpg
 #   make a new data set of certain variables THEN
 #     summarize the new data set by calculating the mean and standard deviation"
 
-# in dplyr: 
+mean(subset(subset(df, ...)))
+# depends on the objective, if you want to grouping_by or filtering and then delete a column; the ordering of function matters. 
+# in dplyr: it creates a deep piping + pipeline 
+# ERROR: 
+df %>% 
+  select(cty, hwy) %>% 
+  group_by(class)
+  summarise_all(funs(mean,sd))
+# But change: 
+df_sum <- df %>% 
+  select(class, cty, hwy) %>% 
+  group_by(class) %>%   # parsiramontial 
+summarise_all(funs(mean,sd))
+
 df %>% 
   select(cty, hwy) %>% 
   summarise_all(funs(mean,sd))
@@ -44,8 +57,7 @@ df %>%
   filter(cty < 25) %>%   
   summarise_all(funs(mean, sd)) 
 
-# example: filter out certain rows, summarize multiple columns by multiple groupings and 
-#   arrange the output by one grouping
+# example: filter out certain rows, summarize multiple columns by multiple groupings and arrange the output by one grouping
 df %>% # take the data THEN
   group_by(class, year) %>% # group observations by class and year THEN
   select(cty, hwy) %>%  # select the variables cty and hwy THEN
@@ -55,6 +67,11 @@ df %>% # take the data THEN
 
 # example: create a new column with mutate()
 # example: calcuate the z-score for each cty observation within a class and year
+# mutate: change and create or delete; the output is delibarate for showing if you only need it once or want to save 
+df %>% 
+  group_by(class)  %>% 
+  mutate(mean_hwy = mean(hwy))
+
 df %>%
   group_by(class,year) %>% 
   select(class,year,cty) %>% 
