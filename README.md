@@ -25,3 +25,10 @@ To set up and manage your own repository:
 3. All files in this repository are now tracked by Git. When you are ready to "save" a file with Git, run `git add filename` (or to save everything run `git add -A`)
 4. Commit your saves with a message: `git commit -m "changed the filename"`. Make sure the message is meaningful. 
 5. Now push the saves to GitHub, the remote repository: `git push`
+
+You can check the status of a repository at any time with `git status`.
+
+Some helpful resources:
+
+* The fastest guide to Git(Hub) I have ever seen: https://rogerdudler.github.io/git-guide/
+* A more detailed treatment: https://swcarpentry.github.io/git-novice/
