@@ -1,6 +1,6 @@
 # R-class
-## Class notes taken; pls contact and give credits if needed or used. 
-### All credits go to sherrytp for anything added as examples and comments. 
+## * Class notes taken; pls contact and give credits if needed or used. 
+## * All credits go to sherrytp for anything added as examples and comments. 
 
 ## Getting set-up
 
