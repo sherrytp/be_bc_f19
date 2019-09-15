@@ -6,7 +6,7 @@ author: "Your name here"
 output: html_document
 ---
 
-*You should have the following packages installed:*
+*The assignment is worth 100 points. You should have the following packages installed:*
 
 ```{r setup, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
