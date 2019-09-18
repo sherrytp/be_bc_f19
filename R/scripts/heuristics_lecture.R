@@ -36,8 +36,8 @@ utility <- function(x,p,tq,hq) {
   u <- 20*sqrt(x-p) + 2*tq + hq
   return(u)
 }
-curve(utility(x,tq=0,hq=0), from =0, to = 1000)
-utility(94,3,3)
+curve(utility(x,p=0, tq=0,hq=0), from =0, to = 100)
+utility(100,4,3,2)
 
 utility <- function(x,p,tq,hq) {
   u <- -(20*sqrt(x-p) + 2*tq + hq)
@@ -46,6 +46,53 @@ utility <- function(x,p,tq,hq) {
 curve(inverse_utility(x), from =0, to = 100)
 optim(1, inverse_utility, lower=0, upper=100, method = "Brent")
 
+
+#========================================
+# reference dependence
+#========================================
+
+rd_utility <- function(x,r=0,alpha=1, beta=1, lambda=2.25){
+  u = ifelse(x>=r, x^alpha, -lambda*(-x)^beta)
+  return(u)
+}
+
+# visualize
+curve(rd_utility, from=-10, to=10,lwd=2, main="Linear (alpha=beta=1)")
+abline(h=0,col="red")
+
+# derivative: marginal utility
+marginal_rd_utility <- function(x,r=0,alpha=1, beta=1, lambda=2.25){
+    mu = ifelse(x>=r, alpha*x^(alpha-1), (beta*-lambda)*(-x)^(beta-1))
+    return(mu)
+}
+
+# or: approximate derivative of function f(x) using central differences
+## f'(x) = [f(x+h) - f(x-h)]/2h (ignoring the truncation error)
+## as h -> 0 the numerical approximation improves
+get_derivative <- function(f, x, h=0.0000000001) {
+  dx <- (f(x + h) - f(x - h)) / (2*h)
+  return(dx)
+}
+
+# sanity check: f(x) = 3x^2 ==> f'(x) = 6x, so f'(2) = 12
+get_derivative(f=function(x) 3*x^2, x=2)
+
+# check: u(x) < -u(-x)
+rd_utility(1)
+abs(rd_utility(-1))
+
+# check: u'(x)_x>r < u'(x)_x<r
+marginal_rd_utility(2)
+abs(marginal_rd_utility(-2))
+## same as:
+get_derivative(rd_utility, 2)
+get_derivative(rd_utility, -2)
+
+
+# labor supply
+utility <- function() {
+  # fill this in!
+}
 
 # Gabaix et al (2006): Comparing algorithms -------------------------------
 
@@ -61,7 +108,7 @@ DC <- function(p,V,S,c=1) {
 # Apicella et al. (2014) --------------------------------------------------
 
 # load data (assumes you are in the class directory)
-df <- read.csv("be_bc_f19/data/endowment_data.csv")
+df <- read.csv("~/Google Drive/boston_college_gdrive/behavioral_econ/github_org/be_bc_f19/data/endowment_data.csv")
 df$lighter <- factor(df$lighter)
 df$magnola_region <- factor(df$magnola_region)
 levels(df$magnola_region) <- c("LE", "HE")
@@ -107,8 +154,8 @@ m1 <- lm(trade~magnola_region + distance_to_mangola + lighter + lighter*distance
 summary(m1) # are these the correct standard errors?
 
 # cluster robust standard errors: adjust for correlated errors *within* camps (still assumes independence *between* camps)
-vcov_campname <- sandwich::vcovCL(m2,cluster = df$campname)
-lmtest::coeftest(m2, vcov_campname)
+vcov_campname <- sandwich::vcovCL(m1,cluster = df$campname)
+lmtest::coeftest(m1, vcov_campname)
 
 # addendum: islinear regression the best model here? 
 ## since "trade" is a binary outcome, it's average is the probability of a trade
