@@ -1,8 +1,8 @@
 ---
 title: "Problem Set 1"
 subtitle: "Behavioral Economics, Boston College"
-date: "Fall 2019"
-author: "Your name here"
+date: "Sep 25, 2019"
+author: "Sherry Peng Tian"
 output: html_document
 ---
 
@@ -19,16 +19,16 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 
 # Big picture
 
-**1. What is the main question asked in this paper?**
-
+**1. What is the main question asked in this paper?** 
+  The main question is why differences between team decisions and individual decisions occur; the goal is to relate the effects of group membership on individual behavior to team decision making. 
 **2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
   
 **3. Explain the differences between each treatment.**
-
+  
 **4. Summarize the main results of the paper.**
-
+  
 **5. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
-
+  
 
 # Replication
 
@@ -37,13 +37,17 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 **6. Import the data into a dataframe object called `df`, then convert all the column names to lowercase.**
 
 ```{r}
-# your code here
+df <- read_csv("sutterexperiment.csv")
+old.names <- colnames(df)
+new.names <- tolower(old.names)
+colnames(df) <- new.names
+rm(new.names, old.names)
 ```
 
 **7. Create a variable called "uniquesubject" that contains unique subject identifiers. Use [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) and [`paste()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/paste.html). (Hint: what variables do you need to "paste" together to ensure each subject is uniquely identified?)**
 
 ```{r}
-# your code here
+
 ```
 
 **8. Similarly, create a variable called "uniqueteam" that contains unique team identifiers. Do it so that the variable has the same values as `subjectid` for all subjects in the INDIVIDUALS treatment.**
@@ -146,4 +150,5 @@ Each plot should be appropriately titled and axes should be appropriately labele
 # your code here
 ```
 
-**25. Why bother clustering standard errors?**
+**25. Why bother clustering standard errors?** 
+Because the standard errors help us to understand the accuracy of the fina outputs; the results cannot be completed without the standard errors. 
