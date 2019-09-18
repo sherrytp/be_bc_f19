@@ -3,10 +3,14 @@ title: "Problem Set 1"
 subtitle: "Behavioral Economics, Boston College"
 date: "Fall 2019"
 author: "Your name here"
-output: html_document
+output:
+  html_document:
+    number_sections: TRUE
 ---
 
-*The assignment is worth 100 points. You should have the following packages installed:*
+<p style="color:red">
+*The assignment is worth **100 points**. There are **25 questions**. You should have the following packages installed:*
+</p>
 
 ```{r setup, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -15,7 +19,7 @@ library(sandwich)
 library(lmtest)
 ```
 
-In this problem set you will summarize the paper ["Individual Behavior and Group Membership: Comment"](https://www.aeaweb.org/articles?id=10.1257/aer.99.5.2247) and recreate its findings. 
+In this problem set you will summarize the paper ["Individual Behavior and Group Membership: Comment"](https://www.aeaweb.org/articles?id=10.1257/aer.99.5.2247) (Sutter, AER 2009) and recreate its findings. 
 
 # Big picture
 
@@ -57,7 +61,10 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 
 **10. Notice that all the values for the variable `round` are prepended with "r". Remove it using [`gsub()`](https://astrostatistics.psu.edu/su07/R/html/base/html/grep.html).**
 
-*Note: Your dataframe `df_narrow` after questions 7-9 should look like `sutterexperiment_long.csv`.*
+<p style="color:red">
+*Note: After questions 7-9 your dataframe `df_narrow`  should look like `sutterexperiment_long.csv`.*
+<p style="color:red">
+
 
 ## Summary table and plot
 
@@ -67,7 +74,7 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 # your code here
 ```
 
-**12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use `theme_classic()` to display the plot with no background.**
+**12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use `theme_classic()` to display the plot.**
 
 ```{r}
 # your code here
@@ -84,7 +91,7 @@ Use `df_narrow` to recreate Figures 1-3. Your code should proceed as follows:
 * then calculate the mean by treatment and round
 * then plot. 
 
-Each plot should be appropriately titled and axes should be appropriately labeled. Make sure the legend displays what you think it should. Use `theme_classic()` to display the plots with no background. 
+Each plot should be appropriately titled and axes should be appropriately labeled. Make sure the legend displays what you think it should. Use `theme_classic()` to display the plots. 
 
 **13. Recreate Figure 1 and assign it to an object `p1`.**
 
@@ -111,9 +118,9 @@ Each plot should be appropriately titled and axes should be appropriately labele
 **17. The paper uses Wilcoxon or Man-Whitney U-tests to check for average treatment effects. This test is similar to a t-test but with some key differences. Summarize these differences. Make sure to compare and contrast and the null hypotheses of each test.**
 
 
-**18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies they do not want to treat subject decisions as independent across rounds. Why?**
+**18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies the authors do not want to treat subject decisions as independent across rounds. Why?**
 
-**19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe `dg_team_avg`. It should have 162 rows.**
+**19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe `df_team_avg`. It should have 162 rows.**
 
 ```{r}
 # your code here
