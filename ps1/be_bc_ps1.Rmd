@@ -25,6 +25,8 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 
 **1. What is the main question asked in this paper?**
 
+This paper is about economics. 
+
 **2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
   
 **3. Explain the differences between each treatment.**
