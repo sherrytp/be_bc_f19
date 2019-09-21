@@ -75,11 +75,12 @@ marginal_rd_utility <- function(x,r=0,alpha=1, beta=1, lambda=2.25){
 # or: approximate derivative of function f(x) using central differences
 ## f'(x) = [f(x+h) - f(x-h)]/2h (ignoring the truncation error)
 ## as h -> 0 the numerical approximation improves
-get_derivative <- function(f, x, h=0.0000000001) {
+get_derivative <- function(f, x, h=0.01) {
   dx <- (f(x + h) - f(x - h)) / (2*h)
   return(dx)
 }
 
+f <- function(x) return(3*x^2)
 # sanity check: f(x) = 3x^2 ==> f'(x) = 6x, so f'(2) = 12
 get_derivative(f=function(x) 3*x^2, x=2)
 
@@ -96,9 +97,15 @@ get_derivative(rd_utility, -2)
 
 
 # labor supply
-utility <- function() {
-  # fill this in!
+utility <- function(h, w=20, r=100, lambda=2, theta=1) {
+  u <- ifelse(w*h >=r, 
+              w*h - r - (theta*h^2)/2, 
+              lambda*(w*h) - r - (theta*h^2)/2
+  )
+  return(u)
 }
+
+curve(utility, from=0, to=20)
 
 # Gabaix et al (2006): Comparing algorithms -------------------------------
 

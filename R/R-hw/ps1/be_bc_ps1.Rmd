@@ -29,8 +29,15 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 
 # Big picture
 
+<<<<<<< HEAD:R/R-hw/ps1/be_bc_ps1.Rmd
 **1. What is the main question asked in this paper?** 
   The main question is why differences between team decisions and individual decisions occur; the goal is to relate the effects of group membership on individual behavior to team decision making. 
+=======
+**1. What is the main question asked in this paper?**
+
+This paper is about economics. 
+
+>>>>>>> upstream/master:ps1/be_bc_ps1.Rmd
 **2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
 It's strategic is whether or not my actions will influence your actions. 
   
