@@ -15,8 +15,8 @@ To get class files on your Desktop:
 1. Open your Terminal and navigate to where you want keep class files
 	- e.g. if I want to put it on my desktop I run `cd ~/Desktop` on the Terminal command line
 2. Now clone this repository: `git clone https://github.com/behavioral-economics/be_bc_f19.git`
-3. To download and integrate changes to the repository run: `git pull` (Note: you can also use `git fetch`, which downloads but does not integrate. Big debate about which is better: https://stackoverflow.com/questions/292357/what-is-the-difference-between-git-pull-and-git-fetch)
-
+3. To download and integrate changes to the repository run: `git pull`, short for `git pull origin master`. 
+	* Note: you can also use `git fetch`, which downloads but does not integrate. [Big debate](https://stackoverflow.com/questions/292357/what-is-the-difference-between-git-pull-and-git-fetch) about which is better. Since the class repository contains material that only I edit, I recommend using `git pull`. 
 
 To set up and manage your own repository:
 

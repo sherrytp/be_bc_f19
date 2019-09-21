@@ -135,3 +135,7 @@ lm(price~weight_no_origin, data=df)
 # Poisson process: a stochastic process, a high frequency and large size of number 
 
 # CLT - never seizes to amuse by infinite number of data 
+
+alpha = 0.3 
+curve(x^alpha, from = 0, to = 10)
+curve((-x)^alpha, from = 0, to = 10)

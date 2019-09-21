@@ -129,14 +129,16 @@ $(document).ready(function () {
 </div>
 
 
-<p><em>The assignment is worth 100 points. You should have the following packages installed:</em></p>
+<p style="color:red">
+<em>The assignment is worth <strong>100 points</strong>. There are <strong>25 questions</strong>. You should have the following packages installed:</em>
+</p>
 <pre class="r"><code>library(tidyverse)
 library(cowplot)
 library(sandwich)
 library(lmtest)</code></pre>
-<p>In this problem set you will summarize the paper <a href="https://www.aeaweb.org/articles?id=10.1257/aer.99.5.2247">“Individual Behavior and Group Membership: Comment”</a> and recreate its findings.</p>
+<p>In this problem set you will summarize the paper <a href="https://www.aeaweb.org/articles?id=10.1257/aer.99.5.2247">“Individual Behavior and Group Membership: Comment”</a> (Sutter, AER 2009) and recreate its findings.</p>
 <div id="big-picture" class="section level1">
-<h1>Big picture</h1>
+<h1><span class="header-section-number">1</span> Big picture</h1>
 <p><strong>1. What is the main question asked in this paper?</strong></p>
 <p><strong>2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is “nonstrategic”.</strong></p>
 <p><strong>3. Explain the differences between each treatment.</strong></p>
@@ -144,9 +146,9 @@ library(lmtest)</code></pre>
 <p><strong>5. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.</strong></p>
 </div>
 <div id="replication" class="section level1">
-<h1>Replication</h1>
+<h1><span class="header-section-number">2</span> Replication</h1>
 <div id="set-up" class="section level2">
-<h2>Set-up</h2>
+<h2><span class="header-section-number">2.1</span> Set-up</h2>
 <p><strong>6. Import the data into a dataframe object called <code>df</code>, then convert all the column names to lowercase.</strong></p>
 <pre class="r"><code># your code here</code></pre>
 <p><strong>7. Create a variable called “uniquesubject” that contains unique subject identifiers. Use <a href="https://dplyr.tidyverse.org/reference/mutate.html"><code>mutate()</code></a> and <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/paste.html"><code>paste()</code></a>. (Hint: what variables do you need to “paste” together to ensure each subject is uniquely identified?)</strong></p>
@@ -155,17 +157,19 @@ library(lmtest)</code></pre>
 <p><strong>9. Create a new dataframe called <code>df_narrow</code> that converts <code>df</code> to “narrow form” (also known as “long form”) using <a href="https://tidyr.tidyverse.org/reference/gather.html"><code>gather()</code></a> and arranges observations by <code>session, subject, treatment, team</code> using <a href="https://dplyr.tidyverse.org/reference/arrange.html"><code>arrange()</code></a>.</strong></p>
 <pre class="r"><code># your code here</code></pre>
 <p><strong>10. Notice that all the values for the variable <code>round</code> are prepended with “r”. Remove it using <a href="https://astrostatistics.psu.edu/su07/R/html/base/html/grep.html"><code>gsub()</code></a>.</strong></p>
-<p><em>Note: Your dataframe <code>df_narrow</code> after questions 7-9 should look like <code>sutterexperiment_long.csv</code>.</em></p>
+<p style="color:red">
+<em>Note: After questions 7-9 your dataframe <code>df_narrow</code> should look like <code>sutterexperiment_long.csv</code>.</em>
+<p style="color:red">
 </div>
 <div id="summary-table-and-plot" class="section level2">
-<h2>Summary table and plot</h2>
+<h2><span class="header-section-number">2.2</span> Summary table and plot</h2>
 <p><strong>11. Use <code>df_narrow</code> a summary table of mean outcomes and standard deviations by treatment. (Do not create a separate dataframe.)</strong></p>
 <pre class="r"><code># your code here</code></pre>
-<p><strong>12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use <code>theme_classic()</code> to display the plot with no background.</strong></p>
+<p><strong>12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use <code>theme_classic()</code> to display the plot.</strong></p>
 <pre class="r"><code># your code here</code></pre>
 </div>
 <div id="replicating-figures-1-3" class="section level2">
-<h2>Replicating Figures 1-3</h2>
+<h2><span class="header-section-number">2.3</span> Replicating Figures 1-3</h2>
 <p>Use <code>df_narrow</code> to recreate Figures 1-3. Your code should proceed as follows:</p>
 <ul>
 <li>begin with the dataframe</li>
@@ -174,7 +178,7 @@ library(lmtest)</code></pre>
 <li>then calculate the mean by treatment and round</li>
 <li>then plot.</li>
 </ul>
-<p>Each plot should be appropriately titled and axes should be appropriately labeled. Make sure the legend displays what you think it should. Use <code>theme_classic()</code> to display the plots with no background.</p>
+<p>Each plot should be appropriately titled and axes should be appropriately labeled. Make sure the legend displays what you think it should. Use <code>theme_classic()</code> to display the plots.</p>
 <p><strong>13. Recreate Figure 1 and assign it to an object <code>p1</code>.</strong></p>
 <pre class="r"><code># your code here</code></pre>
 <p><strong>14. Recreate Figure 2 and assign it to an object <code>p2</code>.</strong></p>
@@ -185,10 +189,10 @@ library(lmtest)</code></pre>
 </div>
 </div>
 <div id="inference" class="section level1">
-<h1>Inference</h1>
+<h1><span class="header-section-number">3</span> Inference</h1>
 <p><strong>17. The paper uses Wilcoxon or Man-Whitney U-tests to check for average treatment effects. This test is similar to a t-test but with some key differences. Summarize these differences. Make sure to compare and contrast and the null hypotheses of each test.</strong></p>
-<p><strong>18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies they do not want to treat subject decisions as independent across rounds. Why?</strong></p>
-<p><strong>19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe <code>dg_team_avg</code>. It should have 162 rows.</strong></p>
+<p><strong>18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies the authors do not want to treat subject decisions as independent across rounds. Why?</strong></p>
+<p><strong>19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe <code>df_team_avg</code>. It should have 162 rows.</strong></p>
 <pre class="r"><code># your code here</code></pre>
 <p><strong>20. Recreate Result 1 (significant difference between treatments INDIVIDUALS and TEAMS, <span class="math inline">\(N=92\)</span>).</strong></p>
 <pre class="r"><code># your code here</code></pre>

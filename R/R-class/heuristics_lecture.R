@@ -65,6 +65,7 @@ rd_utility <- function(x,r=0,alpha=1, beta=1, lambda=2.25){
 # visualize
 curve(rd_utility, from=-10, to=10,lwd=2, main="Linear (alpha=beta=1)")
 abline(h=0,col="red")
+# add the line after the plot 
 
 # derivative: marginal utility
 marginal_rd_utility <- function(x,r=0,alpha=1, beta=1, lambda=2.25){
@@ -80,6 +81,7 @@ get_derivative <- function(f, x, h=0.0000000001) {
   return(dx)
 }
 
+# Alternatively same; f <- function(x) return(3*x^2)
 # sanity check: f(x) = 3x^2 ==> f'(x) = 6x, so f'(2) = 12
 get_derivative(f=function(x) 3*x^2, x=2)
 
@@ -96,10 +98,14 @@ get_derivative(rd_utility, -2)
 
 
 # labor supply
-utility <- function() {
-  # fill this in!
+utility <- function(h, r = 100, w = 20, lambda = 2, theta = 1) {
+  u = ifelse(w*h >= r, 
+             w*h-r - (theta*h^2/2), 
+             lambda*(w*h - r) - (theta*h^2/2))
+  return(u)
 }
-
+curve(utility, from = 0, to = 20)
+abline(h=0,col="green")
 # Gabaix et al (2006): Comparing algorithms -------------------------------
 
 GW <- function(p,V,c=1) {
