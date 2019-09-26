@@ -55,7 +55,7 @@ df %>% # take the data THEN
 
 # example: create a new column with mutate()
 # example: calcuate the z-score for each cty observation within a class and year
-df %>%
+x <- df %>%
   group_by(class,year) %>% 
   select(class,year,cty) %>% 
   mutate(z = (cty - mean(cty))/sd(cty))
