@@ -2,7 +2,7 @@
 title: "Problem Set 1"
 subtitle: "Behavioral Economics, Boston College"
 date: "Fall 2019"
-author: "Your name here"
+author: "SOLUTIONS"
 output:
   html_document:
     number_sections: TRUE
@@ -24,8 +24,6 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 # Big picture
 
 **1. What is the main question asked in this paper?**
-
-This paper is about economics. 
 
 **2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
   
@@ -54,14 +52,21 @@ This paper is about economics.
 
 **8. Similarly, create a variable called "uniqueteam" that contains unique team identifiers. Do it so that the variable has the same values as `subjectid` for all subjects in the INDIVIDUALS treatment.**
 
+```{r}
+# your code here
+```
+
 **9. Create a new dataframe called `df_narrow` that converts `df` to "narrow form" (also known as "long form") using [`gather()`](https://tidyr.tidyverse.org/reference/gather.html) and arranges observations by `session, subject, treatment, team` using [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html).**
 
 ```{r}
 # your code here
 ```
 
-
 **10. Notice that all the values for the variable `round` are prepended with "r". Remove it using [`gsub()`](https://astrostatistics.psu.edu/su07/R/html/base/html/grep.html).**
+
+```{r}
+# your code here
+```
 
 <p style="color:red">
 *Note: After questions 7-9 your dataframe `df_narrow`  should look like `sutterexperiment_long.csv`.*
