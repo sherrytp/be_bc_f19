@@ -88,13 +88,12 @@ sim_bias <- function(n=100,true_p = 0.25, samp_size=4, alpha = 0.05, bias=F,titl
     }
     posteriors <- append(posteriors, ps)
   }
-  par(mfrow=c(2,2))
-  plot(posteriors, type = "l", col="black", ylim = c(0,1), xlab = "Sample", ylab = "P(Heads)", main=title)
+  par(mfrow=c(1,2))
+  plot(posteriors, type = "l", col="black", ylim = c(0,1), xlab = "Sample", ylab = "P(Fair)", main=title)
   abline(h=true_p, col="red")
-  par(fig = c(0.05, 0.5, 0.25, 1), new = T) 
-  hist(S,col="gray", main="")
+  hist(S,col="gray", main="", xlab="Resampling")
 }
-sim(bias=T, samp_size = 32)
+sim_bias(bias=T, samp_size = 52)
 
 
 # law of large numbers ----------------------------------------------------
