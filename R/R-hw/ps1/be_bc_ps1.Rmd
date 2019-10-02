@@ -1,17 +1,11 @@
 ---
 title: "Problem Set 1"
 subtitle: "Behavioral Economics, Boston College"
-<<<<<<< HEAD:R/R-hw/ps1/be_bc_ps1.Rmd
 date: "Sep 25, 2019"
 author: "Sherry Peng Tian"
-output: html_document
-=======
-date: "Fall 2019"
-author: "SOLUTIONS"
 output:
   html_document:
     number_sections: TRUE
->>>>>>> upstream/master:ps1/be_bc_ps1.Rmd
 ---
 
 <p style="color:red">
@@ -19,6 +13,7 @@ output:
 </p>
 
 ```{r setup, results='hide', message=FALSE, warning=FALSE}
+rm(list = ls()) # Clear environment
 library(tidyverse)
 library(cowplot)
 library(sandwich)
@@ -29,27 +24,27 @@ In this problem set you will summarize the paper ["Individual Behavior and Group
 
 # Big picture
 
-<<<<<<< HEAD:R/R-hw/ps1/be_bc_ps1.Rmd
 **1. What is the main question asked in this paper?** 
-  The main question is why differences between team decisions and individual decisions occur; the goal is to relate the effects of group membership on individual behavior to team decision making. 
-=======
-**1. What is the main question asked in this paper?**
 
-<<<<<<< HEAD:R/R-hw/ps1/be_bc_ps1.Rmd
-This paper is about economics. 
+The main question is why differences between team decisions and individual decisions occur; the goal is to relate the effects of group membership on individual behavior to team decision making. 
+  
+**2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".** 
 
->>>>>>> upstream/master:ps1/be_bc_ps1.Rmd
-=======
->>>>>>> upstream/master:ps1/be_bc_ps1.Rmd
-**2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
-It's strategic is whether or not my actions will influence your actions. 
+a). The investment task asks the students to investment with an endowment payment of 100 euro-cents in a total of 9 rounds, resulting a 1/3 probability of 100+2.5X payoff and a 2/3 probability of 100-X payoff. 
+b). To decide a task is strategic whether or not depends on whether one party's actions will influence the other party's actions. Here, this experiment is nonstrategic because the nine rounds are independent of each other and the investment decisions are only made once, either by the individual or individuals as a group. 
   
 **3. Explain the differences between each treatment.**
+
+  1). INDIVIDUALS (n=64) and TEAMS (n=85/3=28) 
+  2). PAY-COMM (n=54) - one individual making decisions on behalf of the team for 3 rounds, and MESSAGE (n=72) - but sending nonbinding messages. 
   
-**4. Summarize the main results of the paper.**
+**4. Summarize the main results of the paper.** 
+
+It turned out making decisions as a group has some effect on individual decision making because of the decisio procedures of sharing the same gain or loss. 
   
 **5. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
-  
+
+a). The effects of salient group memebership on individual behavior prevail also in a nonstrategic task that has no outgroup. b). team decision making has the same effects as salient group membership on individual decisions. c). the experience of team decision making also affects individual behavior. Therefore, both salient group membership and team decision making have largely the SAME effects on individual behavior. 
 
 # Replication
 
@@ -57,36 +52,45 @@ It's strategic is whether or not my actions will influence your actions.
 
 **6. Import the data into a dataframe object called `df`, then convert all the column names to lowercase.**
 
-```{r}
+```{r, warning=FALSE}
 df <- read_csv("sutterexperiment.csv")
 old.names <- colnames(df)
 new.names <- tolower(old.names)
 colnames(df) <- new.names
 rm(new.names, old.names)
+
+df$treatment <- tolower(df$treatment)
 ```
 
 **7. Create a variable called "uniquesubject" that contains unique subject identifiers. Use [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) and [`paste()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/paste.html). (Hint: what variables do you need to "paste" together to ensure each subject is uniquely identified?)**
 
-```{r}
-
+```{r, warning=FALSE}
+df <- df %>% 
+  mutate(uniquesubject = paste(session, treatment, subject, sep = "_"))
 ```
 
 **8. Similarly, create a variable called "uniqueteam" that contains unique team identifiers. Do it so that the variable has the same values as `subjectid` for all subjects in the INDIVIDUALS treatment.**
 
-```{r}
-# your code here
-```
-
 **9. Create a new dataframe called `df_narrow` that converts `df` to "narrow form" (also known as "long form") using [`gather()`](https://tidyr.tidyverse.org/reference/gather.html) and arranges observations by `session, subject, treatment, team` using [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html).**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+df <- df %>% 
+  mutate(uniqueteam = paste(session, team, sep = "_"))
+df <- df %>% mutate(uniqueteam = ifelse(treatment == "individuals", uniquesubject, uniqueteam))
+
+df_narrow <- df %>% 
+  gather("round", "investment", -c(session, subject, treatment, team, uniquesubject, uniqueteam)) %>% 
+  arrange(session, subject, treatment, team)
+
+# df %>% gather("key", "value", x, y, z) is equivalent to df %>% pivot_longer(c(x, y, z), names_to = "key", values_to = "value") 
 ```
+
 
 **10. Notice that all the values for the variable `round` are prepended with "r". Remove it using [`gsub()`](https://astrostatistics.psu.edu/su07/R/html/base/html/grep.html).**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+#df_narrow <- read_csv("sutterexperiment_long.csv")
+df_narrow$round <- gsub("r", "", df_narrow$round)
 ```
 
 <p style="color:red">
@@ -98,14 +102,24 @@ rm(new.names, old.names)
 
 **11. Use `df_narrow` a summary table of mean outcomes and standard deviations by treatment. (Do not create a separate dataframe.)**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+df_narrow %>% 
+  group_by(treatment) %>% 
+  select(investment) %>% 
+  summarise_all(funs(mean, sd))
 ```
 
 **12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use `theme_classic()` to display the plot.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+df_narrow %>% 
+  group_by(treatment) %>% 
+  ggplot(., aes(treatment, investment)) + 
+  stat_summary(fun.y = mean, geom = "bar", fill="grey") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar", width=0.1) + 
+  labs(y = "mean and standard error", x = "Treatment", title = "Mean and Error Bars of Each Treatment") + 
+  theme_classic()
+
 ```
 
 
@@ -123,63 +137,144 @@ Each plot should be appropriately titled and axes should be appropriately labele
 
 **13. Recreate Figure 1 and assign it to an object `p1`.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+#table1 <- df_narrow %>%  filter(treatment == c("individuals", "teams"))%>%  group_by(round, treatment) %>%  summarise(y = mean(investment))
+#fig1 <- ggplot(table1, aes(round, y, group = treatment)) + geom_line(color = "grey") + geom_point(alpha = 0.75, aes(shape = treatment))
+
+fig1 <- df_narrow %>% 
+  select(treatment, round, investment) %>% 
+  filter(treatment == c("individuals", "teams")) %>% 
+  group_by(round, treatment) %>% 
+  summarise(y = mean(investment)) %>% 
+  ggplot(., aes(round, y)) + 
+  geom_line(aes(group = treatment), color = "grey") + 
+  geom_point(alpha=0.75, aes(shape = treatment)) + 
+  labs(size = "Round") + 
+  theme_classic()
+
+fig1
 ```
 
 **14. Recreate Figure 2 and assign it to an object `p2`.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+table2.1 <- df_narrow %>% 
+  filter(treatment == "individuals") %>% 
+  group_by(round, treatment) %>% 
+  summarise(y = mean(investment))
+table2.2 <- df_narrow %>% 
+  filter(treatment == "pay-comm") %>% 
+  group_by(round, treatment) %>% 
+  summarise(y = mean(investment))
+table2.3 <- df_narrow %>% 
+  filter(treatment == "message") %>% 
+  group_by(round, treatment) %>% 
+  summarise(y = mean(investment)) 
+table2 <- rbind(table2.1, table2.2)
+table2 <- rbind(table2, table2.3)
+
+fig2 <- ggplot(table2, aes(round, y, group = treatment)) + geom_line(color = "grey") + geom_point(alpha = 0.75, aes(shape = treatment)) + labs(size = "Round") + theme_classic()
+fig2
 ```
 
 **15. Recreate Figure 3 and assign it to an object `p3`.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+fig3 <- df_narrow %>% 
+  select(treatment, round, investment) %>% 
+  filter(treatment == c("individuals", "mixed")) %>% 
+  group_by(round, treatment) %>% 
+  summarise(y = mean(investment)) %>% 
+  ggplot(., aes(round, y)) + 
+  geom_line(aes(group = treatment), color = "grey") + 
+  geom_point(alpha=0.75, aes(shape = treatment)) + 
+  labs(size = "Round") + 
+  theme_classic()
+fig3
 ```
 
 **16. Use `cowplot()` to combine the three plots into one figure. There should be one row and three columns and each plot should be labeled with a letter (first one "a", second one "b", third on "c").**
+
+```{r, warning=FALSE}
+rm(table1, table2.1, table2.2, table2.3, table2, table3)
+plot_grid(fig1, fig2, fig3, 
+  labels = c('a', 'b', 'c'),
+  nrow = 1) 
+```
+
 
 # Inference
 
 **17. The paper uses Wilcoxon or Man-Whitney U-tests to check for average treatment effects. This test is similar to a t-test but with some key differences. Summarize these differences. Make sure to compare and contrast and the null hypotheses of each test.**
 
+All test on the median $\theta$. The difference between the Mann-Whitney U and the Wilcoxon tests relates to the design of the experiment. If your experiment has a repeated measures or matched participants design then the Wilcoxon test is used to analyse your data. If your experiment has an independent measures design then the Mann-Whitney U test is used to analyse your data. 
+
+The differences between Wilcoxon or Man-Whitney U-tests and t-test are the u-tests compare differences between two independent groups when the dependent variable is either ordinal or continuous, but not normally distributed; therefore, it is considered the nonparametric alternative to the independent t-test. 
 
 **18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies the authors do not want to treat subject decisions as independent across rounds. Why?**
+Because after each round, the inviduals or the team would be notified of their payoffs, so the outcome might somehow influence their next decision and move. 
 
 **19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe `df_team_avg`. It should have 162 rows.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+df_team_avg <- df_narrow %>% 
+  group_by(treatment, uniqueteam) %>% 
+  summarise(mean(investment))
+
+# should be get 99 rows 
+df_narrow %>%  
+  group_by(uniqueteam) %>% 
+  summarise(mean(investment))
 ```
 
 **20. Recreate Result 1 (significant difference between treatments INDIVIDUALS and TEAMS, $N=92$).**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+ppl <- df_team_avg$`mean(investment)`[which(df_team_avg == "individuals")]
+team <- df_team_avg$`mean(investment)`[which(df_team_avg == "teams")]
+
+wilcox.test(ppl, team, var.equal=F, paired = F)
 ```
 
 **21. Recreate Result 2 (significant difference between INDIVIDUALS and PAY-COMM, $N=82$; significant difference between PAY-COMM and MESSAGE, $N=42$; no signfiicant difference between TEAMS and MESSAGE, $N=52$; no significant difference between TEAMS and PAY-COMM, $N=46$).**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+pay <- df_team_avg$`mean(investment)`[which(df_team_avg == "pay-comm")]
+mes <- df_team_avg$`mean(investment)`[which(df_team_avg == "message")]
+
+
+wilcox.test(ppl, pay, var.equal = F, paired = F)
+wilcox.test(pay, mes, var.equal = F, paired = F)   # 0.06903
+wilcox.test(team, mes, var.equal = F, paired = F)
+wilcox.test(team, pay, var.equal = F, paired = F) 
 ```
 
 
-**22. Use `df_narrow` to run the follow regression: $y_{it} = \beta_0 + \beta_1T_i + \varepsilon_{it}$ where $y_{it}$ is the decision of subject $i$ in round $t$ and $T_i$ is her treatment. INDIVIDUALS should be the base treatment. Assign the regression to object `m` and then print the output using `summary(m)`.**
+**22. Use `df_narrow` to run the following regression: $y_{it} = \beta_0 + \beta_1T_i + \varepsilon_{it}$ where $y_{it}$ is the decision of subject $i$ in round $t$ and $T_i$ is her treatment. INDIVIDUALS should be the base treatment. Assign the regression to object `m` and then print the output using `summary(m)`.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+#df_narrow <- cbind(df_narrow, dummy(df_narrow$treatment, sep = "_"))
+
+m <- lm(investment ~ treatment, data = df_narrow)
+summary(m)
 ```
 
-**23. Interpret the results. (Hint: what is the hypothesis test on each coefficient?)**
+**23. Interpret the results. (Hint: what is the hypothesis test on each coefficient?)** 
+
+Null Hypothesis: $H_0$: the two independent groups are homogeneous and have the same distribution, so the distribution shift is 0. 
+Alternatively Hypothesis: the distribution shift is not 0. 
+But the $H_0$ for multiple regression: there is no correlation within the parameters; $D_0 = D_1 = D_2 = D_3 = D_4$.  
+The alternative hypothesis is that there is high correlation with parameters. Because we reject the null hypothesis that they don't have the same distribution, the independent groups are not from the population, meaning the treatments have some effect on individuals' investment decision-makings. Since all distributions are not normally distributed, the median rather than the mean is used for evaluation. With the regression results, all coefficients are statiscally significant at nearly 0.001 level. 
 
 **24. Now cluster the standard errors at the subject level. First create a new variance-covariance matrix called `vcov_subjectid`, then pass it to [`coeftest()`](https://www.rdocumentation.org/packages/lmtest/versions/0.9-37/topics/coeftest) to calculate the new standard errors, t-statistics and p-values.**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+vcov_subjectid <- sandwich::vcovCL(m, cluster = df_narrow$uniquesubject)
+lmtest::coeftest(m, vcov_subjectid)
+
 ```
 
 **25. Why bother clustering standard errors?** 
-Because the standard errors help us to understand the accuracy of the fina outputs; the results cannot be completed without the standard errors. 
+
+The treatment of each subject is not independent of the outcome because of the experiment setup; therefore, we would like to group/cluster similar treatments together to better understand the research goal of team enviroment influencing individuals' investment decisions. Because the standard errors help us to understand the accuracy of the fina outputs; the results cannot be completed without the standard errors. 
+Moreover, since we only 302, realatively small observations, we usually cluster the groups when we have less data to put more weights and improve learning accuracy for the model. 

@@ -1,0 +1,163 @@
+---
+title: "Problem Set 1"
+subtitle: "Behavioral Economics, Boston College"
+date: "Fall 2019"
+author: "SOLUTIONS"
+output:
+  html_document:
+    number_sections: TRUE
+---
+
+<p style="color:red">
+*The assignment is worth **100 points**. There are **25 questions**. You should have the following packages installed:*
+</p>
+
+```{r setup, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+library(cowplot)
+library(sandwich)
+library(lmtest)
+```
+
+In this problem set you will summarize the paper ["Individual Behavior and Group Membership: Comment"](https://www.aeaweb.org/articles?id=10.1257/aer.99.5.2247) (Sutter, AER 2009) and recreate its findings. 
+
+# Big picture
+
+**1. What is the main question asked in this paper?**
+
+**2. Summarize the experiment methodology. Make sure to explain: a) how the investment task works, including an explanation of the payoff function to a subject, and b) why the task is "nonstrategic".**
+  
+**3. Explain the differences between each treatment.**
+
+**4. Summarize the main results of the paper.**
+
+**5. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
+
+
+# Replication
+
+## Set-up
+
+**6. Import the data into a dataframe object called `df`, then convert all the column names to lowercase.**
+
+```{r}
+# your code here
+```
+
+**7. Create a variable called "uniquesubject" that contains unique subject identifiers. Use [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) and [`paste()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/paste.html). (Hint: what variables do you need to "paste" together to ensure each subject is uniquely identified?)**
+
+```{r}
+# your code here
+```
+
+**8. Similarly, create a variable called "uniqueteam" that contains unique team identifiers. Do it so that the variable has the same values as `subjectid` for all subjects in the INDIVIDUALS treatment.**
+
+```{r}
+# your code here
+```
+
+**9. Create a new dataframe called `df_narrow` that converts `df` to "narrow form" (also known as "long form") using [`gather()`](https://tidyr.tidyverse.org/reference/gather.html) and arranges observations by `session, subject, treatment, team` using [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html).**
+
+```{r}
+# your code here
+```
+
+**10. Notice that all the values for the variable `round` are prepended with "r". Remove it using [`gsub()`](https://astrostatistics.psu.edu/su07/R/html/base/html/grep.html).**
+
+```{r}
+# your code here
+```
+
+<p style="color:red">
+*Note: After questions 7-9 your dataframe `df_narrow`  should look like `sutterexperiment_long.csv`.*
+<p style="color:red">
+
+
+## Summary table and plot
+
+**11. Use `df_narrow` a summary table of mean outcomes and standard deviations by treatment. (Do not create a separate dataframe.)**
+
+```{r}
+# your code here
+```
+
+**12. Create a bar plot that displays the mean of each treatment and error bars that display the standard errors of the means. Color each bar gray. Make sure to title the axes and the plot. The subtitle should tell the reader the error bars display the standard error of the mean. Use `theme_classic()` to display the plot.**
+
+```{r}
+# your code here
+```
+
+
+## Replicating Figures 1-3
+
+Use `df_narrow` to recreate Figures 1-3. Your code should proceed as follows:
+
+* begin with the dataframe
+* then filter out observations you don't need for the plot at hand
+* then group observations by treatment and round 
+* then calculate the mean by treatment and round
+* then plot. 
+
+Each plot should be appropriately titled and axes should be appropriately labeled. Make sure the legend displays what you think it should. Use `theme_classic()` to display the plots. 
+
+**13. Recreate Figure 1 and assign it to an object `p1`.**
+
+```{r}
+# your code here
+```
+
+**14. Recreate Figure 2 and assign it to an object `p2`.**
+
+```{r}
+# your code here
+```
+
+**15. Recreate Figure 3 and assign it to an object `p3`.**
+
+```{r}
+# your code here
+```
+
+**16. Use `cowplot()` to combine the three plots into one figure. There should be one row and three columns and each plot should be labeled with a letter (first one "a", second one "b", third on "c").**
+
+# Inference
+
+**17. The paper uses Wilcoxon or Man-Whitney U-tests to check for average treatment effects. This test is similar to a t-test but with some key differences. Summarize these differences. Make sure to compare and contrast and the null hypotheses of each test.**
+
+
+**18. When conducting these tests, the authors first calculate the average decision of each subject across rounds. This implies the authors do not want to treat subject decisions as independent across rounds. Why?**
+
+**19. Create a dataframe frame of subject/team averages across treatments. Call this dataframe `df_team_avg`. It should have 162 rows.**
+
+```{r}
+# your code here
+```
+
+**20. Recreate Result 1 (significant difference between treatments INDIVIDUALS and TEAMS, $N=92$).**
+
+```{r}
+# your code here
+```
+
+**21. Recreate Result 2 (significant difference between INDIVIDUALS and PAY-COMM, $N=82$; significant difference between PAY-COMM and MESSAGE, $N=42$; no signfiicant difference between TEAMS and MESSAGE, $N=52$; no significant difference between TEAMS and PAY-COMM, $N=46$).**
+
+```{r}
+# your code here
+```
+
+
+**22. Use `df_narrow` to run the follow regression: $y_{it} = \beta_0 + \beta_1T_i + \varepsilon_{it}$ where $y_{it}$ is the decision of subject $i$ in round $t$ and $T_i$ is her treatment. INDIVIDUALS should be the base treatment. Assign the regression to object `m` and then print the output using `summary(m)`.**
+
+```{r}
+# your code here
+```
+
+**23. Interpret the results. (Hint: what is the hypothesis test on each coefficient?)**
+
+**24. Now cluster the standard errors at the subject level. First create a new variance-covariance matrix called `vcov_subjectid`, then pass it to [`coeftest()`](https://www.rdocumentation.org/packages/lmtest/versions/0.9-37/topics/coeftest) to calculate the new standard errors, t-statistics and p-values.**
+
+```{r}
+# your code here
+```
+
+**25. Why bother clustering standard errors?**
