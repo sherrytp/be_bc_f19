@@ -1,8 +1,8 @@
 ---
 title: "Problem Set 2"
 subtitle: "Behavioral Economics, Boston College"
-date: "Fall 2019"
-author: "Your name here"
+date: "Oct 13, Fall 2019"
+author: "Sherry Peng TIAN"
 output:
   html_document:
     theme: lumen
@@ -15,10 +15,13 @@ output:
 </p>
 
 ```{r setup, results='hide', message=FALSE, warning=FALSE}
+rm(list = ls()) # Clear environment
 library(tidyverse)
 library(cowplot)
+#install.packages("lfe")
 library(lfe)
 library(stargazer)
+library(reshape2)
 ```
 
 In this problem set you will summarize the paper ["Do Workers Work More if Wages Are High? Evidence from a Randomized Field Experiment"](https://www.aeaweb.org/articles?id=10.1257/aer.97.1.298) (Fehr and Goette, AER 2007) and recreate some of its findings. 
@@ -28,32 +31,75 @@ In this problem set you will summarize the paper ["Do Workers Work More if Wages
 
 **1. What is the main question asked in this paper?**
 
+Do workers work more if wages are high? 
+The life-cycle model of labor supply predicting intertemporal substitution effect are highly restricted to transitory data, which is certainly under a large influence of income effect; therefore, the main question is to test out a better model which can seperately of the intertemperal substitution effect to understand the large variations in employment during business cycles as voluntary choices not involuntary layoffs.
+
 **2. Recall the taxi cab studies where reference dependence is studied using observational data. What can an experimental study do that an observational study can't?**
+
+First of all, observational data means workers anticipate the wage change but in reality, they hardly do so, particularly predict a transitory change. Secondly, because both supply and demand determine wages, a serious endogeneity problem appreas. Hence, the experimental study rules out other externalities that influence the workers react to the income and/or substitution effect. Moreover, most of the time, workers are not free to set their working hours as the model suggesting, so there is another limitation of observational data. Overall, the experimental study used randomization and control group with the implementation of a fully anticipated, temporary, exogenous, and transitory variation in the wage rate. 
 
 **3. Summarize the field experiment design.** 
 
+The experiment utilizes data from Velobliz and Flash delivery companies and randomizes the participating workers into two groups A and B. Both of the groups got a chance of increased commission of 25% in one of the two periods, while the other group exists as a control group. Furthermore, the workers have the chance of choosing their own fixed shiifts as well as signing up for five hours straight. 
+
+----------------------------------------------------
 **4. Summarize the laboratory experiment design. Why was it included with the study?**
-  
+
+
 **5. Summarize the main results of the field experiment.**
+The experiment enables us 1. to clearly isolate the impact the temporary wage increase between two groups. 2. to contral for the income effect of wage increase. 3. to compare the time effects of two companies. 
 
 **6. Summarize the main results of the laboratory experiment.**
 
+the degree of loss aversion is indeed related to the
+response of effort per shift. Higher degrees of loss
+aversion are associated with a stronger negative
+impact of the wage increase on effort per shift, and
+workers who do not display loss aversion in
+choices under uncertainty also do not show a
+significant effort reduction. Thus, it seems that
+loss aversion drives the negative effect of wages
+on effort.
+
 **7. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
+
+
 
 # Theory
 
-**Suppose the messenger's utility function is**
+**Suppose the messenger's utility function is a static one-period utility function that is linear in incme**
 
 $$
 v(e_t, x_t) = \gamma w_t e_t - g(e_t, x_t)
 $$
-**where $w_t$ is the wage rate in time $t$, $e_t$ is the messenger's effort, $\gamma$ is the marginal utility of lifetime wealth, and $g(e_t, x_t) = \frac{(\theta - x_t)e^2}{2}$ is the messenger's cost function constant disutility of effort $\theta$ and exogenous disutility shock $x_t \sim N(0,\sigma^2)$. Since $\mathbb{E}[x_t] = 0$, you can assume $x_t = 0$.**
+**where $w_t$ is the wage rate in time $t$, $e_t$ is the messenger's effort, $\gamma$ is the marginal utility of lifetime wealth, and $g(e_t, x_t) = \frac{(\theta - x_t)e^2}{2}$ (which is strictly convex in $e_x$) is the messenger's cost function constant disutility of effort $\theta$ and exogenous disutility shock $x_t \sim N(0,\sigma^2)$. Since $\mathbb{E}[x_t] = 0$, you can assume $x_t = 0$.**
 
 **8. Show that the messenger chooses a level of effort so that the marginal benefit of working equals the marginal cost.**
 
+Setting the f.o.c of utility function to 0 because of the maximum condition: 
+$$
+v(e_t, x_t) = \gamma w_te_t - \frac{(\theta - x_t)e_t^2}{2}  \\ 
+v'(e_t, x_t) = \gamma w_t - (\theta - x_t)e_t = 0  \\
+\gamma w_t = (\theta - x_t)e_t   \Rightarrow 
+e_t = \frac{\gamma w_t}{\theta - x_t} = \frac{\gamma w_t}{\theta}
+$$
+The s.o.c of utility function requires: 
+$$ 
+v''(e_t, x_t) = -\theta < 0 
+$$
 **9. Show that the messenger in equilibrium responds to higher wages with higher effort.**
 
+pg8: Workers respond to an anticiated temporary increase in $w_t$ with a higher effort $e_t$, so a rise in $w_t$ increases the marginal utility returns of effort, $\theta w_t$ will increase the effort level $e_t^*$ that maximizes $v(e_t, x_t)$. 
+
 **10. Write an R function that calculates $e_t^*$ for different levels of $w_t$. Set default values of $\theta=\gamma=1$. Then use `curve()` to plot the labor supply for $w_t \in [0,10]$.** 
+
+```{r}
+e_t <- function(w_t) {
+  e <- w_t/1
+  return(e)
+}
+curve(e_t, 0, 10)
+```
 
 **11. Now suppose utility is given by**
 
@@ -67,8 +113,27 @@ $$
 
 **12. Show that how the messenger in equilibrium responds to higher wages depends on the reference point $r$. (Hint: recall there are three cases to consider.)**
 
-**13. Once more write an R function that calculates $e_t^*$ for different levels of $w_t$. Set default values of $\theta=\gamma=1$, $\lambda = 2$ and $r=3$. Then use `curve()` to plot the labor supply for $w_t \in [0,10]$.** 
+There are three conditions to consider with regarding to wage rate $w_t$: 
+$$
+e^*_t(w_t) = 
+  \begin{cases}
+    \frac{\lambda \gamma w_t}{\theta} &\quad 
+\text{if} \quad w_t < \sqrt{\frac{\theta r}{\lambda \gamma}}  \\
+    \frac{r}{w_t} &\quad
+\text{if} \quad \sqrt{\frac{\theta r}{\lambda \gamma}} < w_t < \sqrt{\frac{\theta r}{\gamma}}  \\
+    \frac{\gamma w_t}{\theta} &\quad 
+\text{if} \quad w_t > \sqrt{\frac{\theta r}{\gamma}}
+  \end{cases}
+$$
 
+**13. Once more, write an R function that calculates $e_t^*$ for different levels of $w_t$. Set default values of $\theta=\gamma=1$, $\lambda = 2$ and $r=3$. Then use `curve()` to plot the labor supply for $w_t \in [0,10]$.** 
+```{r}
+e_t <- function(w) {
+  e <- ifelse(w < sqrt(1*3/2), 2*w, ifelse(w > sqrt(1*3), w, 3/w))
+  return(e)
+}
+curve(e_t, 0, 10)
+```
 
 # Replication 
 
@@ -85,19 +150,42 @@ $$
 **14. The authors show that earnings at Veloblitz and Flash are correlated. Show this with a scatter plot with a regression line and no confidence interval. Title your axes and the plot appropriately. Do not print the plot but assign it to an object called `p1`. **
 
 ```{r}
-# your code here
+dailycorr <- read.csv("dailycorrs.csv")
+p1 <- ggplot(dailycorr, aes(x=logv, y=logf)) +
+  geom_point(size=2, shape=23) + 
+  geom_smooth(method=lm, se=FALSE, fullrange=FALSE, level=0.95) + 
+  labs(title = "Correlation Test of Delivery Companies", x = "log of Veloblitz", y = "log of Flash") + 
+  theme_classic()
 ```
 
 **15. Next plot the kernel density estimates of revenues for both companies. Overlay the distributions and make the densities transparent so they are easily seen. Title your axes and the plot appropriately. Do not print the plot but assign it to an object called `p2`.**
 
 ```{r}
-# your code here
+# should we $e^*$ back to revenues; create a new table 
+rev_delivery <- melt(exp(dailycorr))
+p2 <- ggplot(rev_delivery, aes(x = value, fill = variable)) +
+  geom_density(alpha=0.4) + 
+  labs(title = "Kernel density estimates", 
+       x = "Revenues $", y = "Density") + 
+  theme_classic()
 ```
+```{r}
+# Alternatively, 
+dailycorr %>% 
+  gather() %>% 
+  ggplot(., aes(value, fill = key)) + 
+  geom_density(alpha = 0.5) + 
+  labs(title = "Kernel density estimates", 
+       x = "Density", y = "Density") + 
+  theme_classic()
+```
+
 
 **16. Now combine both plots using cowplot and label the plots with letters.**
 
 ```{r}
-# your code here
+plot_grid(p1, p2, labels = c('14', '15'),
+  nrow = 1) 
 ```
 
 ## Tables 2 and 3
@@ -106,25 +194,30 @@ $$
 *For this section please use `tables1to4.csv`.*
 <p style="color:red">
 
-
 ### Table 2
 
 **On page 307 the authors write:**
 
->Table 2 controls for **individual fixed effects** by showing how, on average, the messengers' revenues deviate from their person-specific mean revenues. Thus, a positive number here indicates a positive deviation from the person-specific mean; a negative number indicates a negative deviation.
+> Table 2 controls for **individual fixed effects** by showing how, on average, the messengers' revenues deviate from their person-specific mean revenues. Thus, a positive number here indicates a positive deviation from the person-specific mean; a negative number indicates a negative deviation.
 
 **17. Fixed effects are a way to control for *heterogeneity* across individuals that is *time invariant.* Why would we want to control for fixed effects? Give a reason how bike messengers could be different from each other, and how these differences might not vary over time.** 
+
+Because by including fixed effects (group dummies), the study is controlling for the average differences in any observable or unobservable predictors; therefore, in this experimental data, a significant difference among labor supply might be the physical capacibility, which highly influence individuals' choices and revenues and efforts. However, those differences don't matter over time anymore, because there is a rotating cycle in the labor supply, where the main labor force will roughly the same to analyze. 
 
 **18. Create a variable called `totrev_fe` and add it to the dataframe. This requires you to "average out" each individual's revenue for a block from their average revenue: $x_i^{fe} = x_{it} - \bar{x}_i$ where $x_i^{fe}$ is the fixed effect revenue for $i$.**
 
 ```{r}
-# your code here
+df <- read_csv("tables1to4.csv") 
+df <- df %>% 
+  group_by(fahrer) %>% 
+  mutate(totrev_fe = totrev - mean(totrev)) 
 ```
 
 **19. Use `summarise()` to recreate the findings in Table 2 for "Participating Messengers" using your new variable `totrev_fe`. (You do not have to calculate the differences in means.) In addition to calculating the fixed-effect controled means, calculate too the standard errors. Recall the standard error is $\frac{s_{jt}}{\sqrt{n_{jt}}}$ where $s_{jt}$ is the standard deviation for treatment $j$ in block $t$ and $n_{jt}$ are the corresponding number of observations. (Hint: use `n()` to count observations.) Each calculation should be named to a new variable. Assign the resulting dataframe to a new dataframe called `df_avg_revenue`.** 
 
+`summary()`?????? 
 ```{r}
-# your code here
+
 ```
 
 **20. Plot `df_avg_revenue`. Use points for the means and error bars for standard errors of the means. Note the following:**
@@ -133,9 +226,17 @@ $$
 * To place the error bars use `geom_errorbar(aes(x=block, ymin = [MEAN] - [SE], ymax = [MEAN] + [SE]),width = .1,position=position_dodge(width=0.5))`
     + You need to replace `[MEAN]` with whatever you named your average revenues and `[SE]` with whatever you named your standard errors.
   
-```{r}
-# your code here
-```
+{r}
+df %>% 
+  na.omit(odd)
+  group_by(block) %>% 
+  #summarize(sum_trade = sum(trade),mean_trade = mean(trade), distance_to_mangola = unique(distance_to_mangola))%>% 
+  ggplot(., aes(distance_to_mangola,mean_trade,size=sum_trade,label=campname)) + 
+  geom_point(position = posiion_dodge(width = 0.5), size = 4, color="tomato") + 
+  geom_errorbar(aes(x = block, ymin = , ymax), wid = .1, position = position_dodge(width = 0.5))
+  geom_text(aes(label=campname),hjust=0, vjust=0,size=3) + 
+  labs(size = "") + 
+  theme_classic()
 
 **21. Interpret the plot.**
 
@@ -156,7 +257,7 @@ $$
 **23. Now recreate the same point estimates (ignoring the standard errors again) using `lm` and assign it to object `m2`. You are estimating**
 
 $$
-y_{ijt} - \beta_0 + \beta_1 \text{H}_{ijt} + \beta_2 \text{B2}_{ijt} + \beta_3 \text{B3}_{ijt} + \sum_{i=1}^{n} \alpha_i \text{F}_i + \varepsilon_{ijt}
+y_{ijt} = \beta_0 + \beta_1 \text{H}_{ijt} + \beta_2 \text{B2}_{ijt} + \beta_3 \text{B3}_{ijt} + \sum_{i=1}^{n} \alpha_i \text{F}_i + \varepsilon_{ijt}
 $$
 **where $\text{F}_i$ is the dummy variable for each messenger (`fahrer`).**
 ```{r}
@@ -180,5 +281,28 @@ $$
 **26. Recreate all of Table 3 and use [`stargazer()`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf) to print the results.**
 
 ```{r}
-# your code here
+#install.packages("stargazer")
+library(stargazer)
+stargazer(attitude)
+
+m1 <- lm(hwy~class, data=mpg)
+m2 <- lm(cty~class, data=mpg)
+stargazer(m1,m2, 
+          type="html", 
+          style = "aer",
+          omit.stat = c("adj.rsq", "f", "ser"),
+          dep.var.labels.include = FALSE,
+          column.labels = c("MPG (Highway)", "MPG (City)"),
+          covariate.labels = c("Compact", "Midsize", "Minivan",
+                               "Pickup", "Sub-compact", "SUV"),
+          title = "Regression results",
+          notes = "*Source*: Own calculations."
+          )
 ```
+
+## Citation 
+
+Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics
+Tables. R package version 5.2.2. https://CRAN.R-project.org/package=stargazer
+
+ Fehr and Goette, AER (2007). Do Workers Work More if Wages Are High? Evidence from a Randomized Field Experiment. https://www.aeaweb.org/articles?id=10.1257/aer.97.1.298 

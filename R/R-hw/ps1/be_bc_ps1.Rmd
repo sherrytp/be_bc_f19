@@ -1,8 +1,8 @@
 ---
 title: "Problem Set 1"
 subtitle: "Behavioral Economics, Boston College"
-date: "Sep 25, 2019"
-author: "Sherry Peng Tian"
+date: "Sep 25, Fall 2019"
+author: "Sherry Peng TIAN"
 output:
   html_document:
     number_sections: TRUE
@@ -45,6 +45,7 @@ It turned out making decisions as a group has some effect on individual decision
 **5. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
 
 a). The effects of salient group memebership on individual behavior prevail also in a nonstrategic task that has no outgroup. b). team decision making has the same effects as salient group membership on individual decisions. c). the experience of team decision making also affects individual behavior. Therefore, both salient group membership and team decision making have largely the SAME effects on individual behavior. 
+Real-world example: highly related to behavioral finance, when people are investing in the stock market, not precisely in a group but might be affected by the surroundings, like side rumors. 
 
 # Replication
 
@@ -261,9 +262,9 @@ summary(m)
 
 **23. Interpret the results. (Hint: what is the hypothesis test on each coefficient?)** 
 
-Null Hypothesis: $H_0$: the two independent groups are homogeneous and have the same distribution, so the distribution shift is 0. 
+Null Hypothesis: $$H_0$$: the two independent groups are homogeneous and have the same distribution, so the distribution shift is 0. 
 Alternatively Hypothesis: the distribution shift is not 0. 
-But the $H_0$ for multiple regression: there is no correlation within the parameters; $D_0 = D_1 = D_2 = D_3 = D_4$.  
+But the $$H_0$$ for multiple regression: there is no correlation within the parameters; $$D_0 = D_1 = D_2 = D_3 = D_4$$.  
 The alternative hypothesis is that there is high correlation with parameters. Because we reject the null hypothesis that they don't have the same distribution, the independent groups are not from the population, meaning the treatments have some effect on individuals' investment decision-makings. Since all distributions are not normally distributed, the median rather than the mean is used for evaluation. With the regression results, all coefficients are statiscally significant at nearly 0.001 level. 
 
 **24. Now cluster the standard errors at the subject level. First create a new variance-covariance matrix called `vcov_subjectid`, then pass it to [`coeftest()`](https://www.rdocumentation.org/packages/lmtest/versions/0.9-37/topics/coeftest) to calculate the new standard errors, t-statistics and p-values.**

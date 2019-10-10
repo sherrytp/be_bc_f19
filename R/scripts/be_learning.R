@@ -32,7 +32,6 @@ sim_learning <- function(a=1,b=1,n=100,n_reps=100, q=1,true_p = 0.25,bias=F,lear
   }
   plot(data, type = "l", ylim = c(0,1), xlab = "Flip", ylab = "P(Heads)", main=title)
   abline(h=true_p, col="red")
-  return(data)
 }
 
 # no learning
@@ -47,8 +46,8 @@ sim_learning(n_reps=10^4, title="N=10^4")
 dev.off()
 
 # confirmation bias (sort of...)
-sim_learning(n_reps = 1000, learning = T, bias = T, q=1)
-sim_learning(n_reps = 1000, learning = T, bias = T, q=0.25)
+sim_learning(n_reps = 1000, learning = T, q=0)
+sim_learning(n_reps = 1000, learning = T, q=0.25)
 
 
 # attempt at a model of confirmation bias
@@ -93,7 +92,7 @@ sim_bias <- function(n=100,true_p = 0.25, samp_size=4, alpha = 0.05, bias=F,titl
   abline(h=true_p, col="red")
   hist(S,col="gray", main="", xlab="Resampling")
 }
-sim_bias(bias=T, samp_size = 52)
+sim_bias(bias=T, samp_size = 40)
 
 
 # law of large numbers ----------------------------------------------------

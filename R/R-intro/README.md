@@ -14,3 +14,4 @@
 3. `r-intro-ggplot.R`: plotting with [`ggplot2`](https://ggplot2.tidyverse.org/)
 4. `r-intro-stats-review.R`: stats/econometrics review
 4. `r-intro-ate.R`: estimating average treatment effects
+5. `rmarkdown_notes.Rmd`: Notes on writing with RMarkdown.

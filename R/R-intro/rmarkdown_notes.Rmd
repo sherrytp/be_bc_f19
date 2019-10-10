@@ -1,0 +1,142 @@
+---
+title: "R Markdown Notes"
+subtitle: ""
+date: ""
+author: "Lawrence De Geest"
+output:
+  html_document:
+    theme: lumen
+    highlight: pygment
+    number_sections: TRUE
+---
+
+*For a complete introduction see the [official RMarkdown page](https://rmarkdown.rstudio.com/lesson-1.html). Check out the [cheatsheet](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) as well.*
+
+# Markdown
+
+[Markdown](https://www.markdownguide.org/getting-started/) is a markup language. Formatting is coded and shown when the document is compiled. 
+
+To format inline code, wrap it in two backquotes (e.g. `plot()`). 
+
+To display code blocks, indent twice:
+
+    plot()
+
+Quote with `>`:
+
+>It was the best of times, it was the worst of times.
+
+Wrap a word in one asterisks (`*`) to make it *italic*, two asterisks (`**`) to make it **bold**, three to make it ***bold italics***. 
+
+Unordered lists:
+
+* Item one
+* Item two 
+* Item three
+
+Ordered lists:
+
+1. Item one
+2. Item two
+3. Item three
+
+Hashtags (`#`) are used for headers, `##` for subheaders, `###` for subheaders, and so on.
+
+## Subheader
+
+## Subsubheader
+
+# Code chunks
+
+R code can be placed in "chunks":
+
+```
+{r}
+```
+
+Inside `{r}` you can add options like:
+
+* `eval=F` so the code is printed but not evaluated;
+* `echo=F` so the code is evaluated but not printed;
+* a name for the chunk (e.g. `{r demo}`)
+* and [more](https://yihui.name/knitr/options/?version=1.1.383&mode=desktop).
+
+
+
+## Figures
+
+```
+{r, barplot, fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure caption."}
+```
+
+```{r, barplot, message=FALSE, warning=FALSE,fig.align="center", fig.width=6, fig.height=6, fig.cap="Figure caption."}
+library(tidyverse)
+mpg %>%
+  ggplot(aes(reorder(class, hwy), hwy)) + 
+  stat_summary(fun.y = mean, geom = "bar", fill="tomato2") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar", width=0.1) + 
+  labs(y="Miles per gallon (highway)", x="Car class", title="Title", subtitle = "Subtitle") + 
+  theme_classic()
+```
+
+## Tables
+
+There are lots of packages to [format tables](https://rmarkdown.rstudio.com/lesson-7.html). Personally I like [`library(kableExtra)`](http://haozhu233.github.io/kableExtra/awesome_table_in_html.html).
+
+```{r table, warning=F}
+library(kableExtra)
+mpg %>% 
+  group_by(class) %>% 
+  summarise(avg_hwy = mean(hwy), avg_city = mean(cty)) %>% 
+  kable() %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F))
+```
+
+Use [`library(stargazer)`](https://cran.r-project.org/web/packages/stargazer/index.html) for regression tables. All the options are in this [document](https://cran.r-project.org/web/packages/stargazer/stargazer.pdf). Here is a nice [cheatsheet](https://www.jakeruss.com/cheatsheets/stargazer/).
+
+
+```{r regression_table, warning=F, message=F, results="asis"}
+library(stargazer)
+m1 <- lm(hwy~class, data=mpg)
+m2 <- lm(cty~class, data=mpg)
+stargazer(m1,m2, 
+          type="html", 
+          style = "aer",
+          omit.stat = c("adj.rsq", "f", "ser"),
+          dep.var.labels.include = FALSE,
+          column.labels = c("MPG (Highway)", "MPG (City)"),
+          covariate.labels = c("Compact", "Midsize", "Minivan",
+                               "Pickup", "Sub-compact", "SUV"),
+          title = "Regression results",
+          notes = "*Source*: Own calculations."
+          )
+```
+
+# Math
+
+Math is written with [LaTeX](https://en.wikibooks.org/wiki/LaTeX/Mathematics). Just like with HTML (e.g. `<p> ... </p>`) you wrap math code in "environments" (e.g. `\begin{equation} ... \end{equation}`.)
+
+To write an inline equation, wrap it in `$`. `$y = \beta X$` produces $y=\beta X$. 
+
+To write an full-length equation, wrap it inside `\begin{equation} ... \end{equation}`:
+
+    \begin{equation}
+    y=\beta X + \varepsilon
+    \end{equation}
+
+\begin{equation}
+y=\beta X + \varepsilon
+\end{equation}
+
+To align equations use `aligned`:
+
+    \begin{aligned}
+    y &=\beta X + \varepsilon \\
+      &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
+    \end{aligned}
+
+\begin{aligned}
+y &=\beta X + \varepsilon \\
+  &= \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon
+\end{aligned}
+
+Use `\frac{}{}` to write fractions: `\frac{\partial f}{\partial x}` produces $\frac{\partial f}{\partial x}$
