@@ -1,0 +1,3 @@
+
+* This is a written assignment. Please make sure you check your spelling (I have to remind myself constantly, too). You can spellcheck in RStudio by selecting Edit -> Check Spelling (or pressing `F7`). Remember paragraphs are units of thought and easier to read when they are shorter. For more writing tips see [George Orwell's six rules](https://www.npr.org/blogs/ombudsman/Politics_and_the_English_Language-1.pdf).
+* There is no strict wordcount. Your responses do not need to be pages in length, but they should be substantial enough to answer the questions satisfactorily. 
