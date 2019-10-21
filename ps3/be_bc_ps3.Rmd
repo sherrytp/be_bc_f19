@@ -1,0 +1,34 @@
+---
+title: "Problem Set 3"
+subtitle: "Behavioral Economics, Boston College"
+date: "Fall 2019"
+author: ""
+output:
+  html_document:
+    theme: lumen
+    highlight: pygment
+    number_sections: TRUE
+---
+
+<p style="color:red">
+*The assignment contains **5 questions** and is worth **100 points***.
+</p>
+
+<style>
+div.summary { background-color:#e6f0ff; padding-top: 5px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px;}
+</style>
+
+<div class = "summary">
+**Summary.** Massachusetts is debating whether to impose a carbon tax on residents to curb emissions contributing to climate change. Read the article ["Environmental Policy Theory Given Bounded Rationality and Other-regarding Preferences"](https://link.springer.com/article/10.1007/s10640-010-9433-y) and answer the following questions.
+</div>
+<br>
+
+**1. How might mental accounting impact how people view the tax? What kind of hedonic editing can you nudge people to do to overcome them? Your answer should begin with an explanation of mental accounting and hedonic editing (feel free to use examples outside of climate change in your explanation).**
+
+**2. Expected damages from climate change are uncertain and spread out over time. (For a primer on climate change from an economic's viewpoint, see ["An Economist's Guide to Climate Change Science"](https://www.aeaweb.org/articles?id=10.1257/jep.32.4.3).) How will these details impact how people learn about the costs and benefits of adopting the carbon tax?**
+
+**3. Explain how cognitive biases (e.g. confirmation bias, recency bias, and others) will affect how people process information about the tax and its motivations, and how such biases will impact the positions people take. Be sure to define any biases you reference.** 
+
+**4. Taxes are economic incentives and may "crowd-out" social preferences. Explain social preferences and crowding out using examples (original ideas encouraged!). Then give examples of the tax crowding out social preferences. How can crowding-out be avoided? Could the tax even "crowd-in" social preferences? If so, how?**
+
+**5. Propose a information campaign to explain the policy to Massachusetts residents. Touch on what mediums you would use and how (e.g. print, radio, television, social media), who (celebrities, citizens, etc.) you would recruit for help, whether you would engage directly in conversation with residents (e.g. town halls), and other topics you think are important.**
