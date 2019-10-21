@@ -120,3 +120,29 @@ roll(10^1) # roll 10 times
 roll(10^2) # roll 100 times
 roll(10^3) # roll 1000 times
 dev.off()
+
+
+
+## Learning felm()
+oldopts <- options(lfe.threads=1)
+## create covariates
+x <- rnorm(1000)
+x2 <- rnorm(length(x))
+
+## individual and firm
+id <- factor(sample(20,length(x),replace=TRUE))
+firm <- factor(sample(13,length(x),replace=TRUE))
+
+## effects for them
+id.eff <- rnorm(nlevels(id))
+firm.eff <- rnorm(nlevels(firm))
+
+## left hand side
+u <- rnorm(length(x))
+y <- x + 0.5*x2 + id.eff[id] + firm.eff[firm] + u
+
+## estimate and print result
+est <- felm(y ~ x+x2| id + firm)
+summary(est)
+## Not run: compare with lm
+summary(lm(y ~ x + x2 + id + firm-1))

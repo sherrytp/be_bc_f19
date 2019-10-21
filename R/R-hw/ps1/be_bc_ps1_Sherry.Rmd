@@ -118,7 +118,7 @@ df_narrow %>%
   ggplot(., aes(treatment, investment)) + 
   stat_summary(fun.y = mean, geom = "bar", fill="grey") + 
   stat_summary(fun.data = mean_se, geom = "errorbar", width=0.1) + 
-  labs(y = "mean and standard error", x = "Treatment", title = "Mean and Error Bars of Each Treatment") + 
+  labs(y = "Mean and standard error", x = "Treatment", title = "Mean and Error Bars of Each Treatment") + 
   theme_classic()
 
 ```
@@ -194,6 +194,23 @@ fig3 <- df_narrow %>%
 fig3
 ```
 
+<p style="color:blue">
+LDG: Good job. I would use colors or different linetypes to better distinguish treatments. And you can simplify your code. For example, the last image: 
+<p style="color:blue">
+
+```{r}
+df_narrow %>% 
+  filter(treatment == "INDIVIDUALS" | treatment == "MIXED") %>%
+  group_by(treatment,round) %>%
+  summarize(meanvalue = mean(investment)) %>% 
+    ggplot(., aes(round, meanvalue, group=treatment, color=treatment)) +
+    geom_point() + 
+    geom_line() + 
+    ylim(20,100) +
+    theme_classic()
+```
+
+
 **16. Use `cowplot()` to combine the three plots into one figure. There should be one row and three columns and each plot should be labeled with a letter (first one "a", second one "b", third on "c").**
 
 ```{r, warning=FALSE}
@@ -239,7 +256,7 @@ wilcox.test(ppl, team, var.equal=F, paired = F)
 
 **21. Recreate Result 2 (significant difference between INDIVIDUALS and PAY-COMM, $N=82$; significant difference between PAY-COMM and MESSAGE, $N=42$; no signfiicant difference between TEAMS and MESSAGE, $N=52$; no significant difference between TEAMS and PAY-COMM, $N=46$).**
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 pay <- df_team_avg$`mean(investment)`[which(df_team_avg == "pay-comm")]
 mes <- df_team_avg$`mean(investment)`[which(df_team_avg == "message")]
 
@@ -250,6 +267,19 @@ wilcox.test(team, mes, var.equal = F, paired = F)
 wilcox.test(team, pay, var.equal = F, paired = F) 
 ```
 
+<p style="color:blue">
+Correction!!! 
+<p style="color:blue">
+
+```{r}
+df_team_avg %>% 
+  filter(treatment == "message" | treatment == "pay-comm") %>% 
+  wilcox.test(`mean(investment)` ~ treatment, .)
+
+df_team_avg %>% 
+  filter(treatment == "teams" | treatment == "message") %>% 
+  wilcox.test(`mean(investment)` ~ treatment, .) 
+```
 
 **22. Use `df_narrow` to run the following regression: $y_{it} = \beta_0 + \beta_1T_i + \varepsilon_{it}$ where $y_{it}$ is the decision of subject $i$ in round $t$ and $T_i$ is her treatment. INDIVIDUALS should be the base treatment. Assign the regression to object `m` and then print the output using `summary(m)`.**
 
@@ -272,7 +302,6 @@ The alternative hypothesis is that there is high correlation with parameters. Be
 ```{r, warning=FALSE}
 vcov_subjectid <- sandwich::vcovCL(m, cluster = df_narrow$uniquesubject)
 lmtest::coeftest(m, vcov_subjectid)
-
 ```
 
 **25. Why bother clustering standard errors?** 

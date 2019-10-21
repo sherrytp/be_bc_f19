@@ -1,7 +1,7 @@
 ---
 title: "Problem Set 2"
 subtitle: "Behavioral Economics, Boston College"
-date: "Oct 13, Fall 2019"
+date: "Oct 20, Fall 2019"
 author: "Sherry Peng TIAN"
 output:
   html_document:
@@ -42,28 +42,25 @@ First of all, observational data means workers anticipate the wage change but in
 
 The experiment utilizes data from Velobliz and Flash delivery companies and randomizes the participating workers into two groups A and B. Both of the groups got a chance of increased commission of 25% in one of the two periods, while the other group exists as a control group. Furthermore, the workers have the chance of choosing their own fixed shiifts as well as signing up for five hours straight. 
 
-----------------------------------------------------
 **4. Summarize the laboratory experiment design. Why was it included with the study?**
 
+The laboratory experiment measures loss aversion and reference dependent behaviors by observing individuals' choices under uncertainty eight months after the experimental wage increase. The study includes two lotteries: Lottery A to win CHF 8 with probability a/2, or to lose CHF 5 with probability 1/2; Lottery B consiting of six independent repetitions of lottery A. Otherwise, the participants can reject each or both of the lotteries and earn 0 CHF. 
 
 **5. Summarize the main results of the field experiment.**
-The experiment enables us 1. to clearly isolate the impact the temporary wage increase between two groups. 2. to contral for the income effect of wage increase. 3. to compare the time effects of two companies. 
+
+The experiment enables us 1. to clearly isolate the impact the temporary wage increase between two groups. 2. to contral for the income effect of wage increase. 3. to compare the time effects of two companies. Its result shows that messengers do work more hours if raising wages; however, the increase of work effort also depends on their psychological reference dependent points. 
 
 **6. Summarize the main results of the laboratory experiment.**
 
-the degree of loss aversion is indeed related to the
-response of effort per shift. Higher degrees of loss
-aversion are associated with a stronger negative
-impact of the wage increase on effort per shift, and
-workers who do not display loss aversion in
-choices under uncertainty also do not show a
-significant effort reduction. Thus, it seems that
-loss aversion drives the negative effect of wages
-on effort.
+The degree of loss aversion is indeed related to the response of effort per shift. Higher degrees of loss
+aversion are associated with a stronger negative impact of the wage increase on effort per shift, and
+workers who do not display loss aversion in choices under uncertainty also do not show a significant effort reduction. Thus, it seems that loss aversion drives the negative effect of wages on effort.
 
 **7. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example.**
 
+The paper introduces both the neoclasscial model of labor supply as well as the rational choice model, which explains the mathmatical intuition behind them. The experiments are done using observation, field experiment method, and lab experiment eliminating/understanding the effect of loss aversion. Meanwhile, the use of private company large datasets and advanced analytical approaches matter equally. As a result, the paper shows that only loss-averse individuals exhibit a negative effort response to the wage increase, which somehow is aligned but also contradicting the previous understanding. 
 
+Even the study utilizes loads of experiments in the psychology field, it covers a lot of labor supply models, which can help both the companies and governments monitor the labor market. For example, the way messengers choose work (fixed or sign-up) is similar to Uber or taxi drivers. Therefore, how drivers will react to the wage change or other compensation (some behaviors cannot be explained using theoritical models) is discussed in this paper. 
 
 # Theory
 
@@ -93,7 +90,7 @@ pg8: Workers respond to an anticiated temporary increase in $w_t$ with a higher 
 
 **10. Write an R function that calculates $e_t^*$ for different levels of $w_t$. Set default values of $\theta=\gamma=1$. Then use `curve()` to plot the labor supply for $w_t \in [0,10]$.** 
 
-```{r}
+```{r, warning=FALSE}
 e_t <- function(w_t) {
   e <- w_t/1
   return(e)
@@ -127,9 +124,9 @@ e^*_t(w_t) =
 $$
 
 **13. Once more, write an R function that calculates $e_t^*$ for different levels of $w_t$. Set default values of $\theta=\gamma=1$, $\lambda = 2$ and $r=3$. Then use `curve()` to plot the labor supply for $w_t \in [0,10]$.** 
-```{r}
+```{r, warning=FALSE}
 e_t <- function(w) {
-  e <- ifelse(w < sqrt(1*3/2), 2*w, ifelse(w > sqrt(1*3), w, 3/w))
+  e <- ifelse(w < sqrt(1*3/2), 2*1*w, ifelse(w > sqrt(1*3/1), w, 3/w))
   return(e)
 }
 curve(e_t, 0, 10)
@@ -149,7 +146,7 @@ curve(e_t, 0, 10)
 
 **14. The authors show that earnings at Veloblitz and Flash are correlated. Show this with a scatter plot with a regression line and no confidence interval. Title your axes and the plot appropriately. Do not print the plot but assign it to an object called `p1`. **
 
-```{r}
+```{r, warning=FALSE}
 dailycorr <- read.csv("dailycorrs.csv")
 p1 <- ggplot(dailycorr, aes(x=logv, y=logf)) +
   geom_point(size=2, shape=23) + 
@@ -160,8 +157,8 @@ p1 <- ggplot(dailycorr, aes(x=logv, y=logf)) +
 
 **15. Next plot the kernel density estimates of revenues for both companies. Overlay the distributions and make the densities transparent so they are easily seen. Title your axes and the plot appropriately. Do not print the plot but assign it to an object called `p2`.**
 
-```{r}
-# should we $e^*$ back to revenues; create a new table 
+```{r, warning=FALSE}
+# should we $e^*$ back to revenues; create a new table - Doesn't matter with the shape 
 rev_delivery <- melt(exp(dailycorr))
 p2 <- ggplot(rev_delivery, aes(x = value, fill = variable)) +
   geom_density(alpha=0.4) + 
@@ -169,7 +166,7 @@ p2 <- ggplot(rev_delivery, aes(x = value, fill = variable)) +
        x = "Revenues $", y = "Density") + 
   theme_classic()
 ```
-```{r}
+```{r, warning=FALSE}
 # Alternatively, 
 dailycorr %>% 
   gather() %>% 
@@ -183,9 +180,8 @@ dailycorr %>%
 
 **16. Now combine both plots using cowplot and label the plots with letters.**
 
-```{r}
-plot_grid(p1, p2, labels = c('14', '15'),
-  nrow = 1) 
+```{r, warning=FALSE}
+plot_grid(p1, p2, labels = c('14', '15'), nrow = 1) 
 ```
 
 ## Tables 2 and 3
@@ -202,11 +198,11 @@ plot_grid(p1, p2, labels = c('14', '15'),
 
 **17. Fixed effects are a way to control for *heterogeneity* across individuals that is *time invariant.* Why would we want to control for fixed effects? Give a reason how bike messengers could be different from each other, and how these differences might not vary over time.** 
 
-Because by including fixed effects (group dummies), the study is controlling for the average differences in any observable or unobservable predictors; therefore, in this experimental data, a significant difference among labor supply might be the physical capacibility, which highly influence individuals' choices and revenues and efforts. However, those differences don't matter over time anymore, because there is a rotating cycle in the labor supply, where the main labor force will roughly the same to analyze. 
+By including fixed effects (group dummies), the study is controlling for the average differences in any observable or unobservable predictors; therefore, in this experimental data, a significant difference among labor supply might be the physical capacibility, which highly influence individuals' choices and revenues and efforts. However, those differences don't matter over time anymore, because there is a rotating cycle in the labor supply, where the main labor force will roughly the same to analyze. 
 
 **18. Create a variable called `totrev_fe` and add it to the dataframe. This requires you to "average out" each individual's revenue for a block from their average revenue: $x_i^{fe} = x_{it} - \bar{x}_i$ where $x_i^{fe}$ is the fixed effect revenue for $i$.**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 df <- read_csv("tables1to4.csv") 
 df <- df %>% 
   group_by(fahrer) %>% 
@@ -215,9 +211,13 @@ df <- df %>%
 
 **19. Use `summarise()` to recreate the findings in Table 2 for "Participating Messengers" using your new variable `totrev_fe`. (You do not have to calculate the differences in means.) In addition to calculating the fixed-effect controled means, calculate too the standard errors. Recall the standard error is $\frac{s_{jt}}{\sqrt{n_{jt}}}$ where $s_{jt}$ is the standard deviation for treatment $j$ in block $t$ and $n_{jt}$ are the corresponding number of observations. (Hint: use `n()` to count observations.) Each calculation should be named to a new variable. Assign the resulting dataframe to a new dataframe called `df_avg_revenue`.** 
 
-`summary()`?????? 
-```{r}
+```{r, warning=FALSE}
+df_avg_revenue <- df %>% 
+  group_by(odd, block) %>% 
+  summarise(avg_totrev = mean(totrev_fe), sd_totrev = sd(totrev_fe), count = n()) %>% 
+  mutate(se_rev = sd_totrev/sqrt(count))
 
+df_avg_revenue
 ```
 
 **20. Plot `df_avg_revenue`. Use points for the means and error bars for standard errors of the means. Note the following:**
@@ -226,19 +226,19 @@ df <- df %>%
 * To place the error bars use `geom_errorbar(aes(x=block, ymin = [MEAN] - [SE], ymax = [MEAN] + [SE]),width = .1,position=position_dodge(width=0.5))`
     + You need to replace `[MEAN]` with whatever you named your average revenues and `[SE]` with whatever you named your standard errors.
   
-{r}
-df %>% 
-  na.omit(odd)
-  group_by(block) %>% 
-  #summarize(sum_trade = sum(trade),mean_trade = mean(trade), distance_to_mangola = unique(distance_to_mangola))%>% 
-  ggplot(., aes(distance_to_mangola,mean_trade,size=sum_trade,label=campname)) + 
-  geom_point(position = posiion_dodge(width = 0.5), size = 4, color="tomato") + 
-  geom_errorbar(aes(x = block, ymin = , ymax), wid = .1, position = position_dodge(width = 0.5))
-  geom_text(aes(label=campname),hjust=0, vjust=0,size=3) + 
+```{r, warning=FALSE}
+df_avg_revenue %>% 
+  #na.omit(odd) %>% 
+  mutate(bottom = avg_totrev - se_rev, top = avg_totrev + se_rev) %>% 
+  ggplot(., aes(factor(block), avg_totrev, group = odd, color = factor(block))) + 
+  geom_point(position = position_dodge(width = 0.5), size = 4, color="tomato") + 
+  geom_errorbar(aes(x = block, ymin = bottom, ymax = top), wid = .1, position = position_dodge(width=0.5)) + 
   labs(size = "") + 
   theme_classic()
-
+```
 **21. Interpret the plot.**
+
+Because "block" is the dummy variables in the regression model, representing the three periods: previous observation period and two experiment periods, factor(block) gives this variable three levels accordingly. First looking at the observation period, two groups A and B roughly have the same means with the error bars (standard errors) covering the same range; the other higher mean represents the third group (odd=NA). Then, there shows a dictinctive distance of two groups and their error bars (standard errors) don't even overlap for the two experiment periods. Therefore, the plot shows that after the consideration of fixed effects, the treatment effects, meaning the huge raise of wage, brought higher increase of average revenues. 
 
 ### Table 3
 
@@ -250,8 +250,14 @@ $$
 
 **where $\text{H}$ is the variable `high`, $\text{B2}$ is the second block (`block == 2`) and $\text{B3}$ is the third block (`block == 3`).**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+m1 <- df %>% 
+  filter(maxhigh == 1) %>% 
+  group_by(fahrer) %>% 
+  mutate(high_fe = high - mean(high), block2_fe = block2 - mean(block2), block3_fe = block3 - mean(block3)) %>% 
+  #na.omit(odd) %>% 
+  group_by(odd) %>% 
+  lm(totrev_fe ~ high_fe + block2_fe + block3_fe, data = .)
 ```
 
 **23. Now recreate the same point estimates (ignoring the standard errors again) using `lm` and assign it to object `m2`. You are estimating**
@@ -259,9 +265,9 @@ $$
 $$
 y_{ijt} = \beta_0 + \beta_1 \text{H}_{ijt} + \beta_2 \text{B2}_{ijt} + \beta_3 \text{B3}_{ijt} + \sum_{i=1}^{n} \alpha_i \text{F}_i + \varepsilon_{ijt}
 $$
-**where $\text{F}_i$ is the dummy variable for each messenger (`fahrer`).**
-```{r}
-# your code here
+**where $\text{F}_i$ is the dummy variable for each messenger (`fahrer`), and $\alpha_i$ should be the the summation of all multipliers right? (i.e. the overall fixed effect).**
+```{r, warning=FALSE}
+m2 <- lm(totrev ~ factor(high) + factor(block) + factor(fahrer), subset(df, maxhigh == 1))
 ```
 
 **24. Now use the function [`felm()`](https://www.rdocumentation.org/packages/lfe/versions/2.8-3/topics/felm) from the `lfe` package to recreate Model (1), including the standard errors. Assign your estimates to the object `m3`. You are estimating**
@@ -272,32 +278,78 @@ $$
 **where $\alpha_i$ is the individual intercept (i.e. the individual fixed effect).**
 **Note that the function call works as follows: `felm([y]~[x] | [grouping variable] | 0 | [clustering varaible], [name of data])`**
 
-```{r}
-# your code here
+```{r, warning=FALSE}
+m3 <- df %>% 
+  filter(maxhigh == 1) %>% 
+  #na.omit(odd) %>% 
+  group_by(odd) %>% 
+  felm(totrev ~ high + block2 + block3 | fahrer, data = .)
+
+# For model(2), if we want to look at all messengers at velobi, we filter(vebli == 1). 
 ```
 
 **25. Compare the estimates in `m1`, `m2` and `m3`. What is the same? What is different? What would you say is the main advantage of using `felm()`?** 
 
+The coefficients and residuals of m1, m2, and m3 are all the same when we convert the scientific counting of m1 into hundred or thousand counting. The difference comes from the approaches of eliminating fixed effect from the regression models; therefore, the number of regressors in m2 and m3 is different because m2 takes all fahrer IDs as another dummy categorical variables, while m3 takes them as clustering variables (which doesn't appear in the regression result). And m1 runs the regression after eliminating the fixed effect 
+
+When working with big data, the lm() function will cease to work because it will take a very long time or fail utterly; this function was not designed to work with thousands of data afterall. This is where the centering/mean-deviation approach comes in handy: it is much easier (on the computer) to work with deviations from the mean instead of computing all those subject-specific intercepts, therefore, the felm() can help with mean-deviation method and can estimate the correct standard errors. 
+
 **26. Recreate all of Table 3 and use [`stargazer()`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf) to print the results.**
+```{r, warning=FALSE, message=FALSE}
+l2 <- df %>% 
+  filter(vebli == 1) %>% 
+  felm(totrev ~ high + block2 + block3 | fahrer, data = .)
 
-```{r}
-#install.packages("stargazer")
-library(stargazer)
-stargazer(attitude)
+l3 <- df %>% 
+  group_by(fahrer) %>% 
+  felm(totrev ~ high + experiment + block2 + block3 | fahrer, data = .)
 
-m1 <- lm(hwy~class, data=mpg)
-m2 <- lm(cty~class, data=mpg)
-stargazer(m1,m2, 
+l4 <- df %>% 
+  filter(maxhigh == 1) %>% 
+  felm(shifts ~ high + block2 + block3 | fahrer, data = .)
+
+l5 <- df %>% 
+  filter(vebli == 1) %>% 
+  felm(shifts ~ high + block2 + block3 | fahrer, data = .)
+
+l6 <- df %>% 
+  group_by(fahrer) %>% 
+  felm(shifts ~ high + experiment + block2 + block3 | fahrer, data = .)
+  
+stargazer(m3, l2, l3, l4, l5, l6, #type = "html", 
+          style = "aer", align = TRUE, no.space = TRUE, column.sep.width = "1pt", 
+          dep.var.labels = c("Dependent varsiable: Revenues per four-week period", "Dependent variable: Shifts per four-week period"), 
+          column.labels = c("Messengers participating in experiment", "All messengers at Veloblitz", "All messengers at Flash and Veloblitz", "Messengers participating in experiment", "All messengers at Veloblitz", "All messengers at Flash and Veloblitz"), 
+          covariate.labels = c("Treatment dummy", "Dummy for nontreated at Veloblitz", "Treatment period 1", "Treatment period 2"), 
+          title = "MAIN EXPERIMENTAL RESULTS (OLS regressions)",
+          notes = " Robust standard errors, adjusted for clustering on messengers, are in parentheses. *Source*: Own calculations."
+          )
+```
+
+<p style="color:yellow">
+Here below is a trial of printing html formats of m1,m2,m3 (Model (1)) only, which I found harder to change aligns. <\p> 
+```{r, warning=FALSE, message=FALSE}
+stargazer(m1,m2, m3, 
           type="html", 
           style = "aer",
           omit.stat = c("adj.rsq", "f", "ser"),
           dep.var.labels.include = FALSE,
-          column.labels = c("MPG (Highway)", "MPG (City)"),
-          covariate.labels = c("Compact", "Midsize", "Minivan",
-                               "Pickup", "Sub-compact", "SUV"),
-          title = "Regression results",
-          notes = "*Source*: Own calculations."
+          column.labels = c("Messengers participating in experiment", "All messengers at Veloblitz", "All messengers at Flash and Veloblitz"),
+          title = "MAIN EXPERIMENTAL RESULTS (OLS regressions)",
+          note = "*Source*: Own calculations."
           )
+```
+
+<p style="color:yellow">
+Recreate Table 4 
+<\p> 
+```{r, warning=FALSE, message=FALSE}
+df %>% 
+  group_by(fahrer) %>% 
+  mutate(shifts_fe = shifts - mean(shifts)) %>% 
+  group_by(group, block) %>% 
+  summarise(avg_shifts = mean(shifts_fe), sd_shifts = sd(shifts_fe), count = n()) %>% 
+  mutate(se_shifts = sd_shifts/sqrt(count))
 ```
 
 ## Citation 
