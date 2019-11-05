@@ -1,0 +1,45 @@
+---
+title: "Problem Set 3"
+subtitle: "Behavioral Economics, Boston College"
+date: "Nov. 3, Fall 2019"
+author: "Sherry Peng TIAN"
+output:
+  html_document:
+    theme: lumen
+    highlight: pygment
+    number_sections: TRUE
+---
+
+<p style="color:red">
+*The assignment contains **5 questions** and is worth **100 points***.
+</p>
+
+<style>
+div.summary {background-color:#e6f0ff; padding-top: 5px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px;}
+</style>
+
+<div class = "summary">
+**Summary.** Massachusetts is debating whether to impose a carbon tax on residents to curb emissions contributing to climate change. Read the article ["Environmental Policy Theory Given Bounded Rationality and Other-regarding Preferences"](https://link.springer.com/article/10.1007/s10640-010-9433-y) and answer the following questions.
+</div>
+<br>
+
+
+**1. How might mental accounting impact how people view the tax? What kind of hedonic editing can you nudge people to do to overcome them? Your answer should begin with an explanation of mental accounting and hedonic editing (feel free to use examples outside of climate change in your explanation).**
+
+Mental accounting is an activity of individuals or households to keep track of their financial activities in their minds when organizing tasks and purchases and evaluating different decisions, rather than clear calculation. Hedonic editing is an activity when individuals re-code or segregate gains and integrate losses across rather than recording those according to reality, in order to maximize satisfaction and personal utility with outcomes. Therefore, when confronting a tax, people will mentally count the tax in for decision-making, and then hedonic editing of integrating losses will enhance the idea that there is more consumption and cost associated with the taxed item. 
+
+**2. Expected damages from climate change are uncertain and spread out over time. (For a primer on climate change from an economic's viewpoint, see ["An Economist's Guide to Climate Change Science"](https://www.aeaweb.org/articles?id=10.1257/jep.32.4.3).) How will these details impact how people learn about the costs and benefits of adopting the carbon tax?**
+
+As stated above, individuals' mental accounting and hedonic editing will integrate tax costs when facing a tax policy on climate change. Moreover, since expected damages from climate change are uncertain, individuals might have lower perceived risks, which restrained them from protecting the environment, especially when their risk judgements are considerably deviated from experts. This idea is provided by prospect theory, which models individual attitudes toward probabilities or probability ranks of outcomes with a "probability weighting function", like people always underestimate the actual risks and not purchase insurance. Meanwhile, the upcoming damages from climate change are also spread out over a long time, which refers to as the immediacy effect or myopia choice behavior. Contrarary to the standard discounted utility model, intertemporal choice model states that individuals actually make decisions not according to their long-run interests and show time-inconsistent preferences. As a result, the costs and benefits of adopting the carbon tax will be deviated from what the policymakers or moral consideration expect, but people are reluctant to take "future risks" into present consideration. 
+
+**3. Explain how cognitive biases (e.g. confirmation bias, recency bias, and others) will affect how people process information about the tax and its motivations, and how such biases will impact the positions people take. Be sure to define any biases you reference.** 
+
+Optimism bias is a kind of cognitive biases shows that people are overconfident about their own relative abilities and unreasonabily optimistic about their futures; therefore, individuals tend to think of a brighter future of climate change that there will not highly influence people's daily life. Recency bias is a cognitive bias that a person most easily remember something that has happened recently compared to remembering something that may have occurred a while ago; therefore, individuals tend to put more weights on how negatively the carbon tax affects their life now and how much their motivations have contributed to the climate change now rather than what they had done bad for the environment for decades of years in the past. According to Frey and Stutzer 2002, the effects of cognitive biases and social motives will have hugely effect on subjective well-being, so the positions people take are also determined by their social positions and other interrelated themes of heterogeneity, evolution, and happiness. 
+
+**4. Taxes are economic incentives and may "crowd-out" social preferences. Explain social preferences and crowding out using examples (original ideas encouraged!). Then give examples of the tax crowding out social preferences. How can crowding-out be avoided? Could the tax even "crowd-in" social preferences? If so, how?**
+
+Social preferences are preferences that emphasizes more on non-self motives, not like what the standard economic model assumes a person’s preferences focus only on maximizing “monetary” utility, such as fairness, reciprocity, altruism, and intrinsic motivations. For example, people donate money to non-profit organizations for the sake of fair distribution of income. Crowding-out effect means that the incentives enforced by the social planners’ policy might be switched off by people’s intrinsic motivations; the example could be that monetary compensations of blood donations actually crowded out both men and women donors and resulted in less blood donations and low-quality blood. A way to avoid crowding-out is to take social interactions into account when imposing external and formal regulation; hence, not using monetary incentives solely might be a good way to avoid the carbon tax. Crowd-in means that the policy incentives actually bring in more wanted-actions from the agents, meaning the economic incentives and social preferences are complements, not substitutes anymore. Therefore, the incentives could be someway of representation to stimulate people’s pride in protecting the environment.
+
+**5. Propose a information campaign to explain the policy to Massachusetts residents. Touch on what mediums you would use and how (e.g. print, radio, television, social media), who (celebrities, citizens, etc.) you would recruit for help, whether you would engage directly in conversation with residents (e.g. town halls), and other topics you think are important.**
+
+I would like to use television and social media for the information campaign on carbon tax policy, because those two are the main and most popular media approaches nowadays, and "print"" seems a counter-example for our tax policy. I would encourage more celebrities to advertise love for the future environment for their own goods and ask experts to educate the public on climate change issues. The primary campaign should be: display on how climate change will jeopardize our future and more education on biology and geography to the public, so we will absolutely have an open discussion or public hearing with the residents to answer their questions. 
