@@ -39,14 +39,24 @@ In this problem set you will summarize the paper ["Imperfect Public Monitoring w
 
 **1. What is the main question asked in this paper?**
 
+Even though we already know that costly punishment increases coorperation in finite-horizon social delemma situations, but how the option of costly punishment will affect welfare to people in a more realistic environment, in which people observe each others' behaviors and decisions with some small noise. 
+
 **2. Summarize the experiment design.**
-  
+
+The experiment is a 50-round repeated public good game conducted within a 3X2 factorial design, which includes 
+    - three punishment groups: no punishment, regular punishment of 3 tokens each time with a max boundary, and strong punishment of 6 tokens each time without any restrictions 
+    - and two noise groups: no noise when disclosing all correct information to subjects and small noise when there is only a public record, a 10% probability of not disclosing the correct "contributed" results. 
+
 **3. Summarize the main results of the experiment.**
 
 **4. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example. In particular discuss the tradeoffs to transparency in groups and how these tradeoffs might be navigated in a firm, or more broadly, a society.**
 
 **5. If punishment is ineffective under imperfect monitoring, what else can you lean on to ensure people cooperate (at least a little) in a public goods problem?**
 
+
+estimated marginal changes? 
+linear -> coeffinicient in the partial derivate is not isolated. 
+non-linear regression, prohbitated model; derivie and solve for non-linear 
 # Theory
 
 **Payoffs to agent $i$ are**
