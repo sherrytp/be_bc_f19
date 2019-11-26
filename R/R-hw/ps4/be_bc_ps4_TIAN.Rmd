@@ -115,11 +115,33 @@ df %>%
   kable() %>% 
   pack_rows("No Noise", 1,3) %>% 
   pack_rows("Noise", 4,6)
+
+# this one actually is wrong 
+df %>% 
+  group_by(noise, p_reg, p_strong) %>% 
+  summarise("N participation" = n() / 50, "Average Contribution" = mean(contribution), "Average punishment" = mean(punishment), "Average net profits" = mean(income)) %>% 
+  kable() %>% 
+  pack_rows("Group 1", 1,3) %>% 
+  pack_rows("Group 2", 4,6)
+collapse_rows(1:3)
 ```
 
 **8. Recreate Figure 1.**
 
 ```{r}
+# x-axis bins 
+df %>% 
+  select(noise, punishment, p_reg, p_strong, income, round, contribution) %>% 
+  #mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(round, noise, p_reg, p_strong, noise) %>% 
+  mutate(y = mean(contribution)) %>% 
+  ggplot(., aes(round, y), group = interaction(p_reg, p_strong)) + 
+  geom_line(aes(linetype = interaction(p_reg , p_strong), color = interaction(p_reg, p_strong))) + 
+  geom_point(aes(color = interaction(p_reg, p_strong))) +
+  scale_x_continuous(breaks = c(5,10,15,20,25,30,35,40,45,50), label = c("1-5","6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  scale_color_manual(labels = c("PG", "PG w pun", "PG w strong pun"), values = c("red", "green", "blue")) + 
+  facet_wrap(~noise) + theme_classic()
+cowplot::plot_grid()
 df %>%
   mutate(Round_Group = (round - 1) %/% 5) %>%
   group_by(Round_Group , p_reg , p_strong, noise) %>%
