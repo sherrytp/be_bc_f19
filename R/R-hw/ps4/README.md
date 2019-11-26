@@ -20,7 +20,8 @@ subject	ID of subject in session
 group	ID of group in session
 sub_nb_in_group	number of subject in group
 group_id	unique ID for group = session*100 + group
-	
+
+
 contribution	"contribution of subject in this round, 0 or 20"
 contr_dummy	dummy for contribution = contribution/20
 public_record	"public record of subject's contribution this round, only defined if noise=1"
@@ -34,7 +35,7 @@ oth2_public_record	"other group member 2's public record, only defined if noise=
 sum_group_contributions	sum of contributions in group
 sum_group_contributions_pr	sum of contributions according to public records
 income_pg	income of subject from public good game
-income_pg_pr	"income of subject according to public records, only defined of noise=1"
+**income_pg_pr	"income of subject according to public records, only defined of noise=1"**
 received_punishment	"number of punishment points received (not yet multiplied), only defined if punishment=1"
 income_reduction	"resulting income reduction, , only defined if punishment=1, equals 3*received_punishment if p_reg=1, equals 6*received_punishment if p_strong=1"
 income_pg_after_reduction	"income from public good after reduction, capped at 0 for p_reg=1, only defined if punishment=1"

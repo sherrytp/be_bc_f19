@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage[margin=1cm]{geometry}
 \usepackage{dcolumn}
+\usepackage{amssymb,amsmath,amsfonts,eurosym,geometry,ulem,graphicx,caption,color,setspace,sectsty,comment,footmisc,caption,natbib,pdflscape,subfigure,array,hyperref}
 \begin{document}
 
 \begin{table}[!htbp] \centering 
@@ -34,5 +35,50 @@ Residual Std. Error & \multicolumn{1}{c}{1,541.221 (df = 79)} & \multicolumn{1}{
 \end{tabular}}
 \end{table} 
 
+
+**Appendix: the probit model**
+
+
+Suppose we have latent response variable 
+
+$y^* = \mathbf{X}\beta + \varepsilon$ 
+
+where $\mathbf{X}$ is a $k \times 1$ vector of features $[x_1 \; x_2 \; \dots \; x_k]$ and $\beta$ is a $1 \times k$ coefficient vector. 
+
+The observable binary variable $y$ is defined as 
+
+\begin{align*}
+y &= 1 \quad \text{if} \quad  y^* > 0 \\
+y &= 0 \quad \text{if} \quad  y^* \leq 0 \\
+\end{align*}
+
+If we assume that $\varepsilon \sim N(0,1)$ then 
+
+\begin{align*}
+P(y^* > 0)  &= P(\mathbf{X}\beta + \varepsilon > 0)\\
+            &= P(\varepsilon > -\mathbf{X}\beta)\\
+            &= P(\varepsilon < \mathbf{X}\beta) \quad \text{By symmetry of standard normal}\\
+            &= \Phi(\mathbf{X}\beta)
+\end{align*}
+
+So $\mathbf{X}\beta$ are z-scores:
+
+\begin{align*}
+P(y = 1) &= P(y^* > 0) = \Phi(z \leq \mathbf{X}\beta)\\
+P(y = 0) &= P(y^* \leq 0) = 1 - \Phi(z \leq \mathbf{X}\beta)
+\end{align*}
+
+where $\Phi$ is the Standard Normal CDF (e.g. $\Phi(0) = 0.5$; half the standard normal distribution lies below $\mu = 0$). 
+
+If we relax the assumption that the error is standard Normal and instead allow it be $\varepsilon \sim N(0, \sigma^2)$, then 
+
+\begin{align*}
+P(y^* > 0)  &= P(\mathbf{X}\beta + \varepsilon > 0)\\
+            &= P(\frac{\varepsilon}{\sigma} > \frac{-\mathbf{X}\beta}{\sigma})\\
+            &= P(\frac{\varepsilon}{\sigma} < \frac{\mathbf{X}\beta}{\sigma}) \\
+            &= \Phi(\frac{\mathbf{X}\beta}{\sigma})
+\end{align*}
+
+but we cannot estimate $\beta$ and $\sigma$ separately since the probability depends exclusively on their ratio. The standard approach is assume $\sigma = 1$ so $\varepsilon$ is a standard normal. 
 
 \end{document}

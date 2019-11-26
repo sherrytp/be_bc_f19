@@ -11,7 +11,7 @@ number_sections: TRUE
 ---
   
 <p style="color:red">
-*The assignment is worth **100 points**. There are ** 16 questions**. You should have the following packages installed:*
+*The assignment is worth **100 points**. There are **16** questions. You should have the following packages installed:*
 </p>
 
 ```{r setup, results='hide', message=FALSE, warning=FALSE}
@@ -34,23 +34,27 @@ install_github("leeper/margins")
 
 In this problem set you will summarize the paper ["Imperfect Public Monitoring with Costly Punishment: An Experimental Study"](https://www.aeaweb.org/articles?id=10.1257/aer.102.7.3317) (Ambrus and Greiner, AER 2012) and recreate some of its findings. 
 
-
 # Big picture
 
 **1. What is the main question asked in this paper?**
 
+Even though we already know that costly punishment increases coorperation in finite-horizon social delemma situations, the researchers want to learn how the option of costly punishment will affect welfare to people in a more realistic environment, in which people observe each others' behaviors and decisions with some small noise. 
+
 **2. Summarize the experiment design.**
 
+The experiment is a 50-round repeated public good game conducted within a 3X2 factorial design, which includes (a) three punishment groups: no punishment, regular punishment of 3 tokens each time with a max boundary, and strong punishment of 6 tokens each time without any restrictions and (b) two noise groups: no noise when disclosing all correct information to subjects and small noise when there is only a public record, a 10% probability of not disclosing the correct "contributed" results. 
+    
 **3. Summarize the main results of the experiment.**
+
+The researchers found out that with small noise in an imperfect monitoring environment, the public good games with three punishment choices all have less average net payoffs compared to the perfect monitoring system. Meanwhile, even though severity punishment sometimes may be harmful, increasing the severity of a costly punishment will still increase the average net payoffs in a perfect monitoring environment, but the increase is not monotonic with noise.
 
 **4. Why are these results valuable? What have we learned? Motivate your discussion with a real-world example. In particular discuss the tradeoffs to transparency in groups and how these tradeoffs might be navigated in a firm, or more broadly, a society.**
 
+Because this paper examines more punishment technologies and more realistic possibilities, it filled the public good games with more details and an important understanding of outside noise affect. We learned that increasing punishment many times is an useful approach on public goods for the society, even though severe costly punishment might trigger anger or revenge. Moreover, the field could be enriched with real-world data reflecting how the noisy environment would react to costly punishment and the tradeoffs between transparency and inner punishment/incentives. Particarly in a firm with groups, or even a society, if individuals could be more clear with their own tasks and responsibilities, meaning their "public record" will 100% reflect the efforts they put in, then the costly punishment will become a linear model with monotonic relationship between average net profits and punishment. I found this study incredibly significant because like the reality, free riders in a team project can still "show" they invest time into the team but the efforts might be minimal and team members might take those unexplainable reasons into consideration and give up punishment; meanwhile, if team members have different levels of standards, they might punishment someone who puts in efforts and end up with internal consumption and revenge. 
+
 **5. If punishment is ineffective under imperfect monitoring, what else can you lean on to ensure people cooperate (at least a little) in a public goods problem?**
 
-
-estimated marginal changes? 
-linear -> coeffinicient in the partial derivate is not isolated. 
-non-linear regression, prohbitated model; derivie and solve for non-linear 
+Recalling what we covered in public good games, one way is through rewards, so signaling and promoting those people who put distinctive efforts into the game. On the other hand, we could utilize internalities of morals, virtues, and self-satisfaction to trigger "crowd-in" effect, so people contribute to the public goods game not because of external punishment or rewards but because of they morally are educated to do so. 
 # Theory
 
 **Payoffs to agent $i$ are**
@@ -58,11 +62,38 @@ non-linear regression, prohbitated model; derivie and solve for non-linear
 $$
 \pi_i = (e_i - x_i) + \alpha \sum_{i=1}^n x_i
 $$
-**where $e_i$ is the agent's endowment, $x_i$ is her contribution to the public good, $\alpha$ is the marginal per capita return, and $n$ is the group size.**
+**where $e_i$ is the agent's endowment, $x_i$ is her contribution to the public good, $\alpha$ is the marginal per capita return, and $n$ is the group size.
+Explain $\alpha$ and why in public goods game requires $\frac{1}{n} < \alpha < 1$.**
 
-**5. Explain $\alpha$ and why in public goods game requires $\frac{1}{n} < \alpha < 1$.**
+$\alpha$ is the marginal per capita return, representing the private benefits in the public goods literature, of 1/2 for each contribution made to the group. The number should always satisfy $\frac{1}{n} < \alpha < 1$ because $n$ represents the group size; if repreating $n$ times, one can at most contribute $n$ times to the group, equaling to $1$ or at least contribute $0$ times to the group but keep $n$ times to self, equaling to $\frac{1}{n}$. 
 
 **6. Suppose $e_i = e = 20$ (i.e. everyone has 20), $\alpha = 0.4$ and $n=4$. Show that $x_i = 0$ is a symmetric Nash equilibrium, but $x_i=20$ is the social optimum. (Recall that in a Nash equilibrium $i$ cannot increase her payoff by changing her contriubtion.)**
+
+```{r}
+# my personal payoff function in the Nash Equilibrium 
+pi <- function(x, y, e = 20, alpha = 0.4){
+  private = e - x 
+  total_contribution = x + y 
+  pg_payoff = alpha * total_contribution 
+  my_payoff = private + pg_payoff
+  return(my_payoff)
+}
+
+pi(0,0) #= my endowment (e)
+pi(0,3*20) 
+pi(20,3*20)
+
+curve(pi(x, y = 3*20), from = 0, to = 20)
+
+# my personal payoff function in the social optimum 
+pai <- function(x, y, e = 20, alpha = 0.4, n = 4){
+  total_contribution = x + y 
+  pg_payoff = alpha * n * total_contribution
+  my_payoff = e - x + pg_payoff
+  return(my_payoff)
+}
+curve(pi(x, y = 0), from = 0, to = 20)
+```
 
 # Replication
 
@@ -75,25 +106,158 @@ $$
 **7. Recreate Table 1 and use [`kable()`](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) to make a publication-quality table (in HTML).**
 
 ```{r}
-# your code here
+df <- read_csv("punnoise_data.csv")
+df %>% 
+  group_by(treat) %>% 
+  summarise("N participation" = n()/50, "Average Contribution" = mean(contribution), "Average punishment" = mean(punishment), "Average net profits" = mean(income)) %>% 
+  column_to_rownames("treat") %>% 
+  .[c("nopun_nonoise", "pun_nonoise", "strongpun_nonoise", "nopun_noise", "pun_noise", "strongpun_noise"), ] %>%
+  kable() %>% 
+  pack_rows("No Noise", 1,3) %>% 
+  pack_rows("Noise", 4,6)
 ```
 
 **8. Recreate Figure 1.**
 
 ```{r}
-# your code here
+df %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group , p_reg , p_strong, noise) %>%
+  mutate(c1 = mean(contribution)) %>%
+  ggplot(aes(Round_Group , c1 , group = interaction(p_reg , p_strong))) + geom_line(aes(linetype = interaction(p_reg , p_strong), color = interaction(p_reg, p_strong))) + 
+  geom_point(aes(color = interaction(p_reg, p_strong))) + facet_wrap(~noise) + 
+  scale_x_continuous(breaks = c(0,1,2,3,4,5,6,7,8,9), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  scale_color_manual(labels = c("PG", "PG w pun", "PG w strong pun"), values = c("red", "green", "blue")) + 
+  theme_classic()
 ```
 
 **9. Recreate Figure 2.**
 
 ```{r}
-# your code here
+df %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group , p_reg , p_strong, noise) %>%
+  mutate(c1 = mean(income)) %>%
+  ggplot(aes(Round_Group , c1 , group = interaction(p_reg , p_strong))) + geom_line(aes(linetype = interaction(p_reg , p_strong), color = interaction(p_reg, p_strong))) + 
+  geom_point(aes(color = interaction(p_reg, p_strong))) + facet_wrap(~noise) + 
+  scale_x_continuous(breaks = c(0,1,2,3,4,5,6,7,8,9), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  scale_color_manual(labels = c("PG", "PG w pun", "PG w strong pun"), values = c("red", "green", "blue")) + 
+  theme_classic()
 ```
 
 **10. Recreate Figure 4.**
 
 ```{r}
-# your code here
+f11 <- df %>%
+  filter(noise == 0, p_reg == 1) %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group) %>%
+  mutate(cg = ifelse(sum_group_contributions == 60, "All group members contribute",
+                                     ifelse(sum_group_contributions == 0, "No contribution in group", "Some group members contribute"))) %>%
+  mutate(share = ifelse(cg == "All group members contribute", length(which(cg == "All group members contribute"))/length(cg),
+                        ifelse(cg == "No contribution in group", length(which(cg=="No contribution in group"))/length(cg),
+                               length(which(cg == "Some group members contribute"))/length(cg)
+                               )
+                        )
+         ) %>%
+  select(Round_Group, share, cg) %>% unique() %>% 
+  ggplot(mapping = aes(x = Round_Group, y = share, fill = cg)) + geom_area(aes(fill = cg), position = "stack") + 
+  guides(fill = guide_legend(reverse = FALSE)) + 
+  theme_classic()
+
+f21 <- df %>%
+  filter(noise == 1, p_reg == 1) %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group) %>%
+  mutate(cg = ifelse(sum_group_contributions == 60, "All group members contribute",
+                                     ifelse(sum_group_contributions == 0, "No contribution in group", "Some group members contribute"))) %>%
+  mutate(share = ifelse(cg == "All group members contribute", length(which(cg == "All group members contribute"))/length(cg),
+                        ifelse(cg == "No contribution in group", length(which(cg=="No contribution in group"))/length(cg),
+                               length(which(cg == "Some group members contribute"))/length(cg)
+                               )
+                        )
+         ) %>%
+  select(Round_Group, share, cg) %>% unique() %>% 
+  ggplot(mapping = aes(x = Round_Group, y = share, fill = cg)) + geom_area(aes(fill = cg), position = "stack") + 
+  guides(fill = guide_legend(reverse = FALSE)) + 
+  theme_classic()
+
+f31 <-  df %>%
+  filter(noise == 0, p_strong == 1) %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group) %>%
+  mutate(cg = ifelse(sum_group_contributions == 60, "All group members contribute",
+                                     ifelse(sum_group_contributions == 0, "No contribution in group", "Some group members contribute"))) %>%
+  mutate(share = ifelse(cg == "All group members contribute", length(which(cg == "All group members contribute"))/length(cg),
+                        ifelse(cg == "No contribution in group", length(which(cg=="No contribution in group"))/length(cg),
+                               length(which(cg == "Some group members contribute"))/length(cg)
+                               )
+                        )
+         ) %>%
+  select(Round_Group, share, cg) %>% unique() %>% 
+  ggplot(mapping = aes(x = Round_Group, y = share, fill = cg)) + geom_area(aes(fill = cg), position = "stack") + 
+  guides(fill = guide_legend(reverse = FALSE)) + 
+  theme_classic()
+
+f41 <- df %>%
+  filter(noise == 1, p_strong == 1) %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group) %>%
+  mutate(cg = ifelse(sum_group_contributions == 60, "All group members contribute",
+                                     ifelse(sum_group_contributions == 0, "No contribution in group", "Some group members contribute"))) %>%
+  mutate(share = ifelse(cg == "All group members contribute", length(which(cg == "All group members contribute"))/length(cg),
+                        ifelse(cg == "No contribution in group", length(which(cg=="No contribution in group"))/length(cg),
+                               length(which(cg == "Some group members contribute"))/length(cg)
+                               )
+                        )
+         ) %>%
+  select(Round_Group, share, cg) %>% unique() %>% 
+  ggplot(mapping = aes(x = Round_Group, y = share, fill = cg)) + geom_area(aes(fill = cg), position = "stack") + 
+  guides(fill = guide_legend(reverse = FALSE)) + 
+  theme_classic()
+
+f12 <- df %>% 
+  filter(noise == 0, p_reg == 1) %>% 
+  group_by(round, pr_group_contr) %>% 
+  summarise(y = mean(received_punishment)) %>% 
+  ggplot(aes(round, y, group = pr_group_contr)) + geom_line(aes(color = pr_group_contr)) + 
+  scale_x_continuous(breaks = c(5,10,15,20,25,30,35,40,45,50), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  theme_classic()
+f22 <- df %>% 
+  filter(noise == 1, p_reg == 1) %>% 
+  group_by(round, pr_group_contr) %>% 
+  summarise(y = mean(received_punishment)) %>% 
+  ggplot(aes(round, y, group = pr_group_contr)) + geom_line(aes(color = pr_group_contr)) + 
+  scale_x_continuous(breaks = c(5,10,15,20,25,30,35,40,45,50), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  theme_classic()
+f32 <- df %>% 
+  filter(noise == 0, p_strong == 1) %>% 
+  group_by(round, pr_group_contr) %>% 
+  summarise(y = mean(received_punishment)) %>% 
+  ggplot(aes(round, y, group = pr_group_contr)) + geom_line(aes(color = pr_group_contr)) + 
+  scale_x_continuous(breaks = c(5,10,15,20,25,30,35,40,45,50), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  theme_classic()
+f42 <- df %>% 
+  filter(noise == 1, p_strong == 1) %>% 
+  group_by(round, pr_group_contr) %>% 
+  summarise(y = mean(received_punishment)) %>% 
+  ggplot(aes(round, y, group = pr_group_contr)) + geom_line(aes(color = pr_group_contr)) + 
+  scale_x_continuous(breaks = c(5,10,15,20,25,30,35,40,45,50), label = c("1-5",
+"6-10", "11-15", "16-20", "21-25", "26-30", "31-35", "36-40", "41-45", "46-50")) + 
+  theme_classic()
+
+cowplot::plot_grid(f11,f12,
+                   f21,f22,
+                   f31,f32,
+                   f41,f42, 
+                   labels = c("Punishment, no noise","" ,"Punishment, noise", "", 
+                             "Strong punishment, no noise","", "Strong punishment, noise"), 
+                   nrow = 4, ncol = 2)
 ```
 
 
@@ -107,57 +271,66 @@ $$
 
 **11. Write down the marginal effect of $x_1$.**
 
+Keeping all other factors fixed at the level, the marginal effect of $x_1$ is the instantaneous effect that a change in $x_1$ has on the prediction of $y$, which should equal to the coefficient $\beta$. 
 **Now suppose you have a non-linear model**
 
 $$
 y = F(\alpha + \beta_1 x_1 + \beta_2 x_2 + \varepsilon)
 $$
-
 **where $F(\cdot)$ is a "link function" that compresses the inputs so that the output $\hat{y} \in [0,1]$.**
-
 **12. Write down the marginal effect of $x_1$. How does this compare to the marginal effect in the linear model?**
 
+When a link function exists connecting the linear model to the prediction, the marginal effect of $x_1$ should be $$
+\beta_1 F'(\alpha + \beta_1x_1 + \beta_2x_2 + \varepsilon)
+$$, where $F'$ is the first order derivative with regarding to $x_1$ of that "link function". Therefore, the marginal effect takes how the link function transforms $x_1$ into consideration (similarly, the normalization process). 
 **13. A probit model uses the Normal CDF $\Phi$ as the link function, where $\Phi' = \phi$ is the Normal PDF. Use `glm()` to estimate Model 1 in Table 2 (remember to cluster the standard errors at the group level). Assign the model to the object `m1`. Use `summary()` to view the coefficients. Interpret the coefficients. (For more on the probit model, see the appendix.)**
 
 ```{r}
-# your code here
+m1 <- glm(contr_dummy~round+p_reg+p_strong+noise+noise__p_reg+noise__p_strong, data = df, 
+          family = binomial(link = "probit"))
+summary(m1)
+vcov_subjectid <- sandwich::vcovCL(m1, cluster = df$group_id)
+lmtest::coeftest(m1, vcov_subjectid)
 ```
-
+The coefficients of round is -0.00070216, meaning the z-score probility regarding of -0.00070216, -0.0002208827 is for a change in round has negative 0.0002208827 probility change in average contribution. From the coefficient table, there is a strong positive effect of punishment on contribution to public goods and noise has no significant effect on the number of participants. 
 
 **14. Table 2 reports the average marginal effects (AMEs) of the variables on $P(\text{contribute})$. Calculate the AME to the variable `round` as follows:**
 
 1. **Use [`predict()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/predict)to create an object `predictions` that contains the predicted z-scores. (i.e. $\hat{\mathbf{X}\beta}$. Hint: use the option `type="link"` in `predict()`.)** 
 
 ```{r}
-# your code here
+predictions <- predict.glm(m1, data = df, type = "link")
 ```
 
 2. **Use [`dnorm()`](https://www.r-bloggers.com/normal-distribution-functions/) to calculate the probabilities of the predicted z-scores and store the output in an object called `index`.**
 
 ```{r}
-# your code here
+index <- dnorm(predictions, 0, 1)
 ```
 
 3. **Now calculate the marginal effects by multiplying the predicted probabilities times the estimated coefficient for `round` and store the output in `dydxround`.**
 
 ```{r}
-# your code here
+dydxround <- -0.00070216 * index
 ```
 
 4. **Use `mean()` to calculate the AME.**
 
 ```{r}
-# your code here
+mean(dydxround)
 ```
 
 
 **15. Verify your calculations with `margins()`, the plot the AMEs. (Note: these will not be exactly the same as those in the paper, since the paper uses an outdated method in Stata.**
 
 ```{r}
-# your code here
+x <- margins(m1, type = "link")
+summary(x)
+plot(x)
 ```
 
 **16. Interpret the AMEs.** 
+The average marginal effect is the average of probability changes in fitted values for one unit change in the factors for each value in the factors; therefore, the AME table consists of the regression coefficients in a linear regression of binary dependent variables. The AME value of round -0.0007 means that for one unit increase in round, the probability of average contribution (because it's a probit model) will decrease 0.07% points. 
 
 # Appendix: the probit model
 
