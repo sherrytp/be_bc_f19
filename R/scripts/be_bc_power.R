@@ -1,4 +1,4 @@
-# author: @lrdgeest
+# author: @lrdegeest
 
 library(tidyselect)
 library(MESS)
