@@ -240,6 +240,7 @@ f41 <- df %>%
   guides(fill = guide_legend(reverse = FALSE)) + 
   theme_classic()
 
+# or check below 
 f12 <- df %>% 
   filter(noise == 0, p_reg == 1) %>% 
   group_by(round, pr_group_contr) %>% 
@@ -280,6 +281,41 @@ cowplot::plot_grid(f11,f12,
                    labels = c("Punishment, no noise","" ,"Punishment, noise", "", 
                              "Strong punishment, no noise","", "Strong punishment, noise"), 
                    nrow = 4, ncol = 2)
+```
+
+```{r}
+d1 <- df %>%
+    mutate(round = paste0("r",round,"")) %>%
+    spread(round, sum_group_contributions) %>%
+    select(group_id, r1, r50) %>%
+    filter_at(.vars = vars(r1, r50), .vars_predicate = any_vars(!is.na(.)))
+ 
+data.table::setDT(d1)[, r1:= r1[!is.na(r1)][1L] , by = group_id]
+data.table::setDT(d1)[, r50:= r50[!is.na(r50)][1L] , by = group_id]
+ 
+d1 <- d1 %>%
+    mutate(startFinish = ifelse(
+    r50 < 60 ,
+    "Group did not finish with full contributions" ,
+    ifelse(r1<60 & r50 == 60 ,
+           "Group started low, but finished with full contributions",
+           "Group started and finished with full contributions")
+           )) %>%
+    select(group_id, startFinish) %>%
+    unique()
+
+d2 <- merge(df, d1)
+d2 %>%
+  filter(punishment ==  1 & noise == 0) %>%
+  mutate(Round_Group = (round - 1) %/% 5) %>%
+  group_by(Round_Group , startFinish) %>%
+  mutate(mp = mean(received_punishment)) %>%
+  select(Round_Group, mp , startFinish) %>%
+  unique() %>%
+  ggplot(aes(x = Round_Group , y = mp , group = startFinish)) +
+  geom_line(aes(linetype = startFinish)) +
+  scale_x_continuous(name = "Rounds/5" , breaks = seq(0,10,1)) +
+  scale_y_continuous(name = "Punishment" , breaks = seq(0,2.5,0.5))
 ```
 
 
