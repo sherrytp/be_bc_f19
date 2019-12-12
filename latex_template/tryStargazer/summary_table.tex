@@ -1,0 +1,151 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb,amsmath,amsfonts,eurosym,geometry,ulem,graphicx,caption,color,setspace,sectsty,comment,footmisc,caption,natbib,pdflscape,subfigure,array,hyperref}
+
+\normalem
+
+\onehalfspacing
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{subhyp}{Hypothesis}[hyp]
+\renewcommand{\thesubhyp}{\thehyp\alph{subhyp}}
+
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\arraybackslash\hspace{0pt}}m{#1}}
+
+\geometry{left=1.0in,right=1.0in,top=1.0in,bottom=1.0in}
+
+\begin{document}
+
+\begin{titlepage}
+\title{Predictions on EU Target2 Balance}
+\author{Sherry Peng Tian\thanks{Tian: Boston College, tianpe@bc.edu, Eagle ID: 17651338}}
+% \and Surname2\thanks{affiliation2, address2, email2. Acknowledgements}}
+\date{\today}
+\maketitle
+\begin{abstract}
+\noindent Placeholder\\
+\vspace{0in}\\
+\noindent\textbf{Keywords:} key1, key2, key3\\
+\bigskip
+\end{abstract}
+\setcounter{page}{0}
+\thispagestyle{empty}
+\end{titlepage}
+
+\pagebreak \newpage
+
+\doublespacing
+
+%\clearpage
+%\section*{Figures} \label{sec:fig}
+%\addcontentsline{toc}{section}{Figures}
+
+%\begin{figure}[hp]
+%  \centering
+%  \includegraphics[width=.6\textwidth]{../fig/placeholder.pdf}
+%  \caption{Placeholder}
+%  \label{fig:placeholder}
+%\end{figure}
+%\clearpage
+
+
+
+
+\section{Background} \label{sec:background}
+
+\section{Literature Review} \label{sec:literature}
+\subsection{Target 2}
+
+\section{Model} \label{sec:model}
+\subsection{Data Source and Cleaning}
+
+The policy uncertainty index of various countries is derived directly from \href{https://www.policyuncertainty.com/monetary.html}{the Economic Policy Uncertainty} website and the target2 balance datasets are from \href{http://www.eurocrisismonitor.com}{the Institute of Empirical Economic Research} at Osnabrück University, which is a reliable source for tracking TARGET2 balances from October 2011 to September 2015, nearly on a daily basis. 
+
+Since the timelines of two datasets are moduled the same, after year and month, there is no difficulty transferring the combined ones into a time series. Refererring to the raw dataset, there are missing variables only for ECB and Cyprus groups. Table 1 below has shown descriptive details of countries' target2 balance as well as the policy uncertainly index from a macroeconomic perspective. In addition, the box plots of uncertainly intex of 
+
+\begin{table}[!htbp] \centering 
+  \caption{Descriptive statistics} 
+  \label{} 
+  \resizebox{1\textwidth}{!}{
+\begin{tabular}{@{\extracolsep{5pt}} ccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & mean & sd & min & max \\ 
+\hline \\[-1.8ex] 
+Austria & -24296.7933783784 & 14674.3237811389 & -46049.49 & 4086.61 \\ 
+Belgium & -23289.5541891892 & 19329.5564321393 & -98312.13 & 7687.79 \\ 
+Cyprus &  &  &  &  \\ 
+ECB &  &  &  &  \\ 
+European-News-Index & 154.548700315458 & 66.3208691016548 & 47.6923446655273 & 433.277496337891 \\ 
+France & 185.035862158011 & 98.0282374243346 & 30.6203689575195 & 574.633178710938 \\ 
+France-News-Index & 185.035862158011 & 98.0282374243346 & 30.6203689575195 & 574.633178710938 \\ 
+Germany & 137.807954985816 & 65.0741829256057 & 28.4339847564697 & 454.005432128906 \\ 
+Germany-News-Index & 137.807954985816 & 65.0741829256057 & 28.4339847564697 & 454.005432128906 \\ 
+Greece & 102.636670389217 & 26.6825469949835 & 47.1814761087496 & 188.704530504278 \\ 
+Greece-policy-uncertainty & 123.493935990991 & 60.0910694754914 & 28.63219 & 344.2343 \\ 
+Ireland & 121.966938633335 & 55.9441890855816 & 22.9658655600782 & 282.127765252969 \\ 
+Italy & 110.990210017642 & 38.5988775008311 & 31.7015342712402 & 241.018203735352 \\ 
+Italy-News-Index & 110.990210017642 & 38.5988775008311 & 31.7015342712402 & 241.018203735352 \\ 
+Netherlands & 95.8721697437445 & 38.2458191255031 & 27.2133611447053 & 233.73110601772 \\ 
+Spain & 109.835684836893 & 32.7956285430677 & 56.2692222595215 & 236.578872680664 \\ 
+Spain-News-Index & 112.530257319545 & 57.697184778201 & 23.3175201416016 & 407.419403076172 \\ 
+Sweden & 91.4955742387561 & 18.6321694506138 & 53.73406929 & 156.7298215 \\ 
+UK & 209.477777781787 & 156.802512055422 & 30.4688014984131 & 1141.79553222656 \\ 
+UK-News-Index & 209.477777781787 & 156.802512055422 & 30.4688014984131 & 1141.79553222656 \\ 
+\hline \\[-1.8ex] 
+\end{tabular}} 
+\end{table} 
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{Uncertainty.png}
+  \caption{Box Plot of Policy Uncertainty Index}
+  \label{fig:policy_uncertainty}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{Bal1.jpeg}
+    \caption{Target2 Balance}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{Bal2.jpeg}
+    \caption{Negative Target2 Balance}
+  \end{subfigure}
+  \caption{EU Countries Target2 Balance}
+  \label{fig:target2bal}
+\end{figure}
+
+\subsection{Transformation}
+
+\subsection{Decomposition}
+
+%\section{Results} \label{sec:result}
+
+%\section{Conclusion} \label{sec:conclusion}
+
+\singlespacing
+\setlength\bibsep{0pt}
+\bibliographystyle{my-style}
+\bibliography{Placeholder}
+
+\clearpage
+
+\onehalfspacing
+
+\section*{Tables} \label{sec:tab}
+\addcontentsline{toc}{section}{Tables}
+
+\section*{Appendix A. Placeholder} \label{sec:appendixa}
+\addcontentsline{toc}{section}{Appendix A}
+
+\end{document}

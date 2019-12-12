@@ -1,0 +1,72 @@
+
+
+\documentclass[11pt]{article}
+
+\usepackage{geometry,amsmath,amssymb,xfrac,amsthm} 
+%\usepackage [usenames,dvipsnames]{color}
+\def\ds{\displaystyle}
+\def\ul{\underline}
+\def\mb{\mathbf}
+\usepackage{graphicx}
+\usepackage{tikz}
+\oddsidemargin=-0.0cm
+\evensidemargin=-0.0cm
+\topmargin=-0.0cm
+\textwidth=7in
+\textheight=9in
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\def\ds{\displaystyle}
+\def\ul{\underline}
+\def\mb{\mathbf}
+\usepackage{framed,color}
+\definecolor{shadecolor}{rgb}{1,0.8,0.3}
+\usepackage{fancybox}
+\usepackage{mdframed}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Easy Maximum Principle}
+\pagestyle{myheadings}
+\author{}
+\date{}
+\def\ds{\displaystyle}
+\def\ul{\underline}
+
+\begin{document}
+\maketitle
+%\markboth{final}{final}
+%{\color{red} stuff}
+
+\begin{theorem}
+Suppose $u$ is bounded and harmonic in a bounded open set $\Omega$.
+\newline  
+Suppose $\ds \limsup_{z\to p \in \partial \Omega}u(z) \le M$ for all $p\in \partial \Omega$.  Then $u(z) \le M$.
+\end{theorem}
+
+\begin{proof}
+
+Let $\delta >0$. Let $W=\{z: z\in \Omega, u(z)>M+\delta\} \subset \Omega$. Then $\overline{W} \subset \overline{\Omega}$, so $\partial W \subset \Omega \cup \partial \Omega$. First we prove that $\partial W \cap \partial \Omega = \emptyset$. For if $p\in \partial \Omega$ then $\limsup_{z\to p \in \partial \Omega}u(z) \le M$.  But if $p\in \partial W$ then 
+$\limsup_{z\to p \in \partial W}u(z) \ge M+\delta$. So $\overline{W} \subset \Omega$ and $u$ is continuous on $\overline{W}$. Now a point $p$ in $\partial W$ must contain points in $W$ and points not in $W$. Since $u$ is continuous, if $u(p)>M+\delta$, so are nearby points ($W$ is open). So it must be the case that $u(p) \le M+\delta$.  In other words $u(p) \le M+\delta$ for points $p\in \partial W$. By the maximum principle $u(p) \le M+\delta$ for all $p\in W$.  This contradicts the definition of $W$.  So $W=\emptyset$. In other words $u(p)\le M+\delta$ for all $p\in \Omega$.  Since $\delta >0$ is arbitrary, $u(p) \le M$ for all $p \in \Omega$.
+\end{proof}
+
+\begin{equation}
+\Upsilon_{\max_{k \in lp(i)}(L_k)} = 1
+\end{equation}
+
+Inline math, i.e. math within text: $\min_{n}\Arrowvert x \Arrowvert_{1}$
+A displayed formula:
+\[\min_{n}\Arrowvert x \Arrowvert_{1}\]
+ 
+Inline math, but in a displayed style:
+$\displaystyle\min_{n}\Arrowvert x \Arrowvert_{1}$
+ 
+Inline math, only \verb|\min| in a displayed style, i.e. limits below:
+$\min\limits_{n}\Arrowvert x \Arrowvert_{1}$
+
+%\bibliographystyle{amsplain}
+%\bibliography{header}
+
+\end{document}
