@@ -1,6 +1,6 @@
 # be_bc_f19
 
-This repository contains the course materials for Behavioral Economics at Boston College, Fall 2019
+This repository not only contains the course materials but only solutons and assignment answers credited to STP for Behavioral Economics at Boston College, Fall 2019. If you need any further explanation or need to quote/cite the answer, please contact me immediately. Any violation against my will will be subject to rights reserved. 
 
 ## Git(Hub)
 
